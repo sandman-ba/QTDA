@@ -21,7 +21,7 @@ def f(x): return np.sin((2.0*pi)*x) # Time series function
 series = f(time)
 
 # Point Cloud
-cloud = np.array( [ series[:(points - 1)] , series[tau:] ] )
+cloud = np.array( [ [series[:points]] , [series[tau:]] ] )
 
 
 # Plotting Time series
