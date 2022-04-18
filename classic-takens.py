@@ -6,7 +6,7 @@ from numpy import pi
 def f(x): return np.sin(x)
 
 # Time series times
-X = np.linespace(0.0, 2.0*pi, num=8, endpoint=False)
+X = np.linspace(0.0, 2.0*pi, num=9, endpoint=True)
 
 # Delay and dimension
 tau = 1
@@ -16,7 +16,7 @@ d = 2
 Y = f(X)
 
 # Point Cloud
-V = f([X[:-(tau*d)] , X[tau:]])
+V = f( np.array( [ X[:-((tau*d) - 1)] , X[tau:] ] ) )
 
 # Plotting Time series
 fig1 = plt.figure()
