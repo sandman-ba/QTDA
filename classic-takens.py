@@ -59,9 +59,15 @@ fig2.savefig("figures/point-cloud.png")
 
 # Boundary
 def boundary(k):
-    faces = nCk(points, k) # Number of faces, dimension k-1
-    simp = nCk(points, k+1) # Number of simplices, dimension k
-    nonzero = np.zeros( (faces, simp) ) # Need to change this somehow ###################################
+    comp1 = kcomplex(k-1) # simplices dimension k-1
+    comp2 = kcomplex(k) # simplices dimension k
+    faces = comp1.size(0) # number of simplices dimension k-1
+    simp = comp2.size(0) # number of simplices dimension k
+    nonzero = np.zeros( (faces, simp) )
+    for i in range(faces):
+        for j in range(simp):
+            nonzero[i,j] = isface(comp1[i,:], comp2[j,:])
+            
     bound = np.block ([
         [ np.zeros( (faces, faces) ) , nonzero ],
         [ np.zeros( (simp, faces) ) , np.zeros( (simp, simp) ) ]
@@ -71,18 +77,46 @@ def boundary(k):
 
 # Projection
 def projection(k, eps):
-    simp = nCk(points, k+1) # Number of simplices
-    proj = np.zeros( (simp, simp) ) # Need to change this somehow #########################################
+    comp = kcomplex(k) # k-simplices
+    proj = np.diag( diameter(comp, eps) )
     return proj
 
 
 # Persistent Dirac Operator
-def dirac(k, eps1, eps2):
+def dirac(k, eps1, eps2, xi):
     bound1 = boundary(k)
     bound2 = boundary(k+1)
-    proj1 = projection(k-1, eps1)
-    proj2 = projection(k, eps1)
-    proj3 = projection(k+1, eps2)
-    di = 0 # Write equation for dirac operator ###########################################
+    proj = np.block([
+        [ projection(k-1, eps1) , np.zeros( () ) , np.zeros( () ) ],
+        [ np.zeros( () ) , projection(k, eps1) , np.zeros( () ) ],
+        [ np.zeros( () ) , np.zeros( () ) , projection(k+1, eps2) ]
+        ])
+    di = proj * np.block([
+        [ (-xi)*np.eye( () ) , bound1 , np.zeros( () ) ],
+        [ bound1 , (xi)*np.eye( () ) , bound2 ],
+        [np.zeros( () ) , bound2 , (-xi)*np.eye( () ) ],
+        ]) * proj
     return di
 
+
+# Simplex diameter
+def diameter(simplex, eps):
+    diam = 0 # Need to get diameter of simplex #############################################
+    return diam
+
+
+# k-simplices
+def kcomplex(k):
+    comp = np.zeros( (nCk(points,k), points) ) # Write simplices as lists of 0s and 1s ####################
+    return comp
+
+
+# Get coefficient of boundary matrix
+def isface(face, simplex):
+    if (simplex.sum() - face.sum()) < 0.5:
+        return 0
+    diff = face + simplex
+    if np.sum( np.absolute( diff - 1.0 ) < 0.5 ) > 1.0:
+        return 0
+    power = np.argmin( diff[ diff > 0.5 ] ) # Check power ########################################
+    return (-1)**power
