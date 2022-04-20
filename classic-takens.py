@@ -108,8 +108,8 @@ def isface(face, simplex):
 def boundary(k, n):
     comp1 = kcomplex(k-1, n) # simplices dimension k-1
     comp2 = kcomplex(k, n) # simplices dimension k
-    faces = comp1.size(0) # number of simplices dimension k-1
-    simp = comp2.size(0) # number of simplices dimension k
+    faces, _ = comp1.shape # number of simplices dimension k-1
+    simp, _ = comp2.shape # number of simplices dimension k
     nonzero = np.zeros( (faces, simp) )
     for row, face in enumerate(comp1):
         for col, simplex in enumerate(comp2):
@@ -123,55 +123,63 @@ def boundary(k, n):
 
 
 # Projection
-def projection(k, n, eps):
+def projection(k, n, x, y, eps):
     comp = kcomplex(k, n) # k-simplices
-    proj = np.zeros(comp.size(0),1)
+    proj = np.zeros( (comp.shape[0], 1) )
     for i, simp in enumerate(comp):
-        proj[i] = diameter(simp, eps)
+        proj[i] = diameter(simp, x, y, eps)
     return proj
 
 
 # Persistent Dirac Operator
-def dirac(k, n, eps1, eps2, xi):
-    bound1 = boundary(k) # k dimensional boundary matrix
-    bound2 = boundary(k+1) # k-1 dimentional boundary matrix
+def dirac(k, n, x, y, eps1, eps2, xi):
+    bound1 = boundary(k, n) # k dimensional boundary matrix
+    bound2 = boundary(k+1, n) # k-1 dimentional boundary matrix
+    rows1, cols1 = bound1.shape
+    rows2, cols2 = bound2.shape
     proj = np.block([
-        [ np.diag(projection(k-1, n, eps1)) , np.zeros( () ) , np.zeros( () ) ],
-        [ np.zeros( () ) , np.diag(projection(k, n, eps1)) , np.zeros( () ) ],
-        [ np.zeros( () ) , np.zeros( () ) , np.diag(projection(k+1, n, eps2)) ]
-        ]) # Projection operator #################################################
+        [ np.diag(projection(k-1, n, x, y, eps1)) , np.zeros( (rows1, cols1) ) , np.zeros( (rows1, cols2) ) ],
+        [ np.zeros( (cols1, rows1) ) , np.diag(projection(k, n, x, y, eps1)) , np.zeros( (rows2, cols2) ) ],
+        [ np.zeros( (cols2, rows1) ) , np.zeros( (cols2, rows2) ) , np.diag(projection(k+1, n, x, y, eps2)) ]
+        ]) # Projection operator
     di = proj * np.block([
-        [ (-xi)*np.eye( () ) , bound1 , np.zeros( () ) ],
-        [ bound1.transpose() , (xi)*np.eye( () ) , bound2 ],
-        [np.zeros( () ) , bound2.transpose() , (-xi)*np.eye( () ) ],
-        ]) * proj # Dirac operator ##########################################
+        [ (-xi)*np.eye( (rows1, rows1) ) , bound1 , np.zeros( (rows1, cols2) ) ],
+        [ bound1.transpose() , (xi)*np.eye( (rows2, rows2) ) , bound2 ],
+        [np.zeros( (cols2, rows1) ) , bound2.transpose() , (-xi)*np.eye( (cols2, cols2) ) ],
+        ]) * proj # Dirac operator
     return di
 
 
 #################
 #     Test      #
 #################
-simp1 = np.array([0,1,1,1])
-simp2 = np.array([0,1,1,0])
-simp3 = np.array([1,1,1,1])
-simp4 = np.array([1,1,0,0])
+#simp1 = np.array([0,1,1,1])
+#simp2 = np.array([0,1,1,0])
+#simp3 = np.array([1,1,1,1])
+#simp4 = np.array([1,1,0,0])
 xcoo = np.array([0,1,1,0])
 ycoo = np.array([0,0,1,1])
 epst = 1.0
 
-test1 = diameter(simp1, xcoo, ycoo, epst)
-print(f"Test 1 is {test1} and should be 0")
-test2 = diameter(simp2, xcoo, ycoo, epst)
-print(f"Test 2 is {test2} and should be 1")
+#test1 = diameter(simp1, xcoo, ycoo, epst)
+#print(f"Test 1 is {test1} and should be 0")
+#test2 = diameter(simp2, xcoo, ycoo, epst)
+#print(f"Test 2 is {test2} and should be 1")
 
-test3 = isface(simp2, simp1)
-print(f"Test 3 is {test3} and should be 1")
-test4 = isface(simp3, simp1)
-print(f"Test 4 is {test4} and should be 0")
-test5 = isface(simp4, simp1)
-print(f"Test 5 is {test5} and should be 0")
+#test3 = isface(simp2, simp1)
+#print(f"Test 3 is {test3} and should be 1")
+#test4 = isface(simp3, simp1)
+#print(f"Test 4 is {test4} and should be 0")
+#test5 = isface(simp4, simp1)
+#print(f"Test 5 is {test5} and should be 0")
 
 test6 = kcomplex(2, 4)
 print(f"Test 6 is \n {test6}")
+
+test7 = boundary(2, 4)
+print(f"Test 7 is \n {test7}")
+
+test8 = projection(2, 4, xcoo, ycoo, epst)
+print(f"Test 8 is \n {test8}")
 
 
