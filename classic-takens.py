@@ -110,22 +110,17 @@ def boundary(k, n):
     comp2 = kcomplex(k, n) # simplices dimension k
     faces, _ = comp1.shape # number of simplices dimension k-1
     simp, _ = comp2.shape # number of simplices dimension k
-    nonzero = np.zeros( (faces, simp) )
+    bound = np.zeros( (faces, simp) )
     for row, face in enumerate(comp1):
         for col, simplex in enumerate(comp2):
-            nonzero[row,col] = isface(face, simplex)
-            
-    bound = np.block ([
-        [ np.zeros( (faces, faces) ) , nonzero ],
-        [ np.zeros( (simp, faces) ) , np.zeros( (simp, simp) ) ]
-        ])
+            bound[row,col] = isface(face, simplex)
     return bound
 
 
 # Projection
 def projection(k, n, x, y, eps):
     comp = kcomplex(k, n) # k-simplices
-    proj = np.zeros( (comp.shape[0], 1) )
+    proj = np.zeros( comp.shape[0] )
     for i, simp in enumerate(comp):
         proj[i] = diameter(simp, x, y, eps)
     return proj
@@ -142,11 +137,11 @@ def dirac(k, n, x, y, eps1, eps2, xi):
         [ np.zeros( (cols1, rows1) ) , np.diag(projection(k, n, x, y, eps1)) , np.zeros( (rows2, cols2) ) ],
         [ np.zeros( (cols2, rows1) ) , np.zeros( (cols2, rows2) ) , np.diag(projection(k+1, n, x, y, eps2)) ]
         ]) # Projection operator
-    di = proj * np.block([
-        [ (-xi)*np.eye( (rows1, rows1) ) , bound1 , np.zeros( (rows1, cols2) ) ],
-        [ bound1.transpose() , (xi)*np.eye( (rows2, rows2) ) , bound2 ],
-        [np.zeros( (cols2, rows1) ) , bound2.transpose() , (-xi)*np.eye( (cols2, cols2) ) ],
-        ]) * proj # Dirac operator
+    di = proj @ np.block([
+        [ (-xi)*np.eye( rows1 ) , bound1 , np.zeros( (rows1, cols2) ) ],
+        [ bound1.transpose() , (xi)*np.eye( rows2 ) , bound2 ],
+        [np.zeros( (cols2, rows1) ) , bound2.transpose() , (-xi)*np.eye( cols2 ) ],
+        ]) @ proj # Dirac operator
     return di
 
 
@@ -160,6 +155,7 @@ def dirac(k, n, x, y, eps1, eps2, xi):
 xcoo = np.array([0,1,1,0])
 ycoo = np.array([0,0,1,1])
 epst = 1.0
+epst2 = 2.0
 
 #test1 = diameter(simp1, xcoo, ycoo, epst)
 #print(f"Test 1 is {test1} and should be 0")
@@ -181,5 +177,19 @@ print(f"Test 7 is \n {test7}")
 
 test8 = projection(2, 4, xcoo, ycoo, epst)
 print(f"Test 8 is \n {test8}")
+
+test9 = dirac(2, 4, xcoo, ycoo, epst, epst2, 1)
+print(f"Test 9 is \n {test9}")
+test10, _ = LA.eig( test9 )
+print(f"Test 10 is \n {test10}")
+test11 = np.sum( np.absolute(test10 - 1.0) < 0.001 )
+print(f"The number of loops that persist from scale {epst} to scale {epst2} is:\n {test11}")
+
+test12 = dirac(2, 4, xcoo, ycoo, epst, epst, 1)
+print(f"Test 12 is \n {test12}")
+test13, _ = LA.eig( test12 )
+print(f"Test 13 is \n {test13}")
+test14 = np.sum( np.absolute(test13 - 1.0) < 0.001 )
+print(f"The number of loops that persist from scale {epst} to scale {epst} is:\n {test14}")
 
 
