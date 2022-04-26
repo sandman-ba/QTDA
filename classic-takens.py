@@ -110,17 +110,23 @@ cloudy = series[tau:] # Point Cloud y
 # Betti numbers #
 #################
 dirop = dirac(betk, points, cloudx, cloudy, e1, e2, xi) # Dirac operator
+rank1 = LA.matrix_rank(dirop) # Rank of Dirac operator
 eigen, _ = LA.eig( dirop ) # Eigenvalues and eigenvectors of dirac operator
+print(f"The dimension of the Dirac operator at scales {e1} and {e2} is {rank1}")
 betti = np.sum( np.absolute(eigen - 1.0) < 0.001 ) # Multiplicity of eigenvalue 1
 print(f"The number of loops that persist from scale {e1} to scale {e2} is:\n {betti}")
 
 dirop2 = dirac(betk, points, cloudx, cloudy, e2, e2, xi) # Dirac operator
+rank2 = LA.matrix_rank(dirop2) # Rank of Dirac operator
 eigen2, _ = LA.eig( dirop2 ) # Eigenvalues and eigenvectors of dirac operator
+print(f"The dimension of the Dirac operator at scales {e2} and {e2} is {rank2}")
 betti2 = np.sum( np.absolute(eigen2 - 1.0) < 0.001 ) # Multiplicity of eigenvalue 1
 print(f"The number of loops that at scale {e2} is:\n {betti2}")
 
 dirop3 = dirac(betk, points, cloudx, cloudy, e2, e3, xi) # Dirac operator
+rank3 = LA.matrix_rank(dirop3) # Rank of Dirac operator
 eigen3, _ = LA.eig( dirop3 ) # Eigenvalues and eigenvectors of dirac operator
+print(f"The dimension of the Dirac operator at scales {e2} and {e3} is {rank3}")
 betti3 = np.sum( np.absolute(eigen3 - 1.0) < 0.001 ) # Multiplicity of eigenvalue 1
 print(f"The number of loops that persist from scale {e2} to scale {e3} is:\n {betti3}")
 
@@ -152,8 +158,8 @@ plt.ylabel("x(t + tau)")
 ################
 # Saving plots #
 ################
-fig1.savefig("figures/time-series.png")
-fig2.savefig("figures/point-cloud.png")
+#fig1.savefig("figures/time-series.png")
+#fig2.savefig("figures/point-cloud.png")
 
 
 #################
