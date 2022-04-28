@@ -85,11 +85,13 @@ def dirac(k, n, x, y, eps1, eps2, xi):
 ##############
 # Parameters #
 ##############
-T = 9 # Number of data-times
+#T = 9 # Number of data-times
+T = 5
 tau = 1 # Delay
+#tau = 2
 d = 2 # Dimension of point cloud
 e1 = 1.0 # First scale
-e2 = 1.3 # Second scale
+e2 = 1.5 # Second scale
 e3 = 2.0 # Third scale
 betk = 1 # Dimension for Betti number
 xi = 1.0 # Parameter for Dirac operator
@@ -158,8 +160,8 @@ plt.ylabel("x(t + tau)")
 ################
 # Saving plots #
 ################
-#fig1.savefig("figures/time-series.png")
-#fig2.savefig("figures/point-cloud.png")
+fig1.savefig("figures/time-series.png")
+fig2.savefig("figures/point-cloud.png")
 
 
 #################
