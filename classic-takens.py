@@ -112,6 +112,7 @@ cloudy = series[tau:] # Point Cloud y
 # Betti numbers #
 #################
 dirop = dirac(betk, points, cloudx, cloudy, e1, e2, xi) # Dirac operator
+print(f"{dirop}")
 rank1 = LA.matrix_rank(dirop) # Rank of Dirac operator
 eigen, _ = LA.eig( dirop ) # Eigenvalues and eigenvectors of dirac operator
 print(f"The dimension of the Dirac operator at scales {e1} and {e2} is {rank1}")
@@ -119,13 +120,15 @@ betti = np.sum( np.absolute(eigen - 1.0) < 0.001 ) # Multiplicity of eigenvalue 
 print(f"The number of loops that persist from scale {e1} to scale {e2} is:\n {betti}")
 
 dirop2 = dirac(betk, points, cloudx, cloudy, e2, e2, xi) # Dirac operator
+print(f"{dirop2}")
 rank2 = LA.matrix_rank(dirop2) # Rank of Dirac operator
 eigen2, _ = LA.eig( dirop2 ) # Eigenvalues and eigenvectors of dirac operator
-print(f"The dimension of the Dirac operator at scales {e2} and {e2} is {rank2}")
+print(f"The dimension of the Dirac operator at scale {e2} is {rank2}")
 betti2 = np.sum( np.absolute(eigen2 - 1.0) < 0.001 ) # Multiplicity of eigenvalue 1
 print(f"The number of loops that at scale {e2} is:\n {betti2}")
 
 dirop3 = dirac(betk, points, cloudx, cloudy, e2, e3, xi) # Dirac operator
+print(f"{dirop3}")
 rank3 = LA.matrix_rank(dirop3) # Rank of Dirac operator
 eigen3, _ = LA.eig( dirop3 ) # Eigenvalues and eigenvectors of dirac operator
 print(f"The dimension of the Dirac operator at scales {e2} and {e3} is {rank3}")
@@ -136,32 +139,32 @@ print(f"The number of loops that persist from scale {e2} to scale {e3} is:\n {be
 ########################
 # Plotting Time series #
 ########################
-fig1 = plt.figure()
-plt.plot(time, series, 'o')
-plt.ylim(-1.2,1.2)
-plt.xlim(-0.2, 1.2)
-plt.title("Time Series", size = 24, weight = 'bold')
-plt.xlabel("time")
-plt.ylabel("sine")
+#fig1 = plt.figure()
+#plt.plot(time, series, 'o')
+#plt.ylim(-1.2,1.2)
+#plt.xlim(-0.2, 1.2)
+#plt.title("Time Series", size = 24, weight = 'bold')
+#plt.xlabel("time")
+#plt.ylabel("sine")
 
 
 ########################
 # Plotting Point Cloud #
 ########################
-fig2 = plt.figure()
-plt.plot(cloudx, cloudy, 'o')
-plt.ylim(-1.2, 1.2)
-plt.xlim(-1.2, 1.2)
-plt.title("Point Cloud", size = 24, weight = 'bold')
-plt.xlabel("x(t)")
-plt.ylabel("x(t + tau)")
+#fig2 = plt.figure()
+#plt.plot(cloudx, cloudy, 'o')
+#plt.ylim(-1.2, 1.2)
+#plt.xlim(-1.2, 1.2)
+#plt.title("Point Cloud", size = 24, weight = 'bold')
+#plt.xlabel("x(t)")
+#plt.ylabel("x(t + tau)")
 
 
 ################
 # Saving plots #
 ################
-fig1.savefig("figures/time-series.png")
-fig2.savefig("figures/point-cloud.png")
+#fig1.savefig("figures/time-series.png")
+#fig2.savefig("figures/point-cloud.png")
 
 
 #################
