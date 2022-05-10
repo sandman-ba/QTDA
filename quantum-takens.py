@@ -1,37 +1,39 @@
-#import numpy as np
-#import matplotlib.pyplot as plt
-#from numpy import pi
-#from numpy import linalg as LA
+import numpy as np
+import matplotlib.pyplot as plt
+from numpy import pi
+from numpy import linalg as LA
 #from math import comb as nCk
 #from itertools import combinations
 #from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
+#from qiskit.circuit.library import QFT
 
 
 ##############################
 #        Circuit             #
 ##############################
 
-qbits = QuantumRegister(8, 'q')
-output = ClassicalRegister(8, 'c')
-circuit = QuantumCircuit(qbits, output)
+#q = QuantumRegister(8, 'q')
+#c = ClassicalRegister(2, 'c')
+#circuit = QuantumCircuit(q, c)
 
-circuit.h(qubits[0])
-circuit.h(qubits[1])
-circuit.h(qubits[2])
+#circuit.h(q[0])
+#circuit.h(q[1])
+#circuit.h(q[2])
 
-circuit.h(qubits[6])
-circuit.h(qubits[7])
+#circuit.h(q[6])
+#circuit.h(q[7])
 
-circuit.cx(qubits[0], qubits[3])
-circuit.cx(qubits[1], qubits[4])
-circuit.cx(qubits[2], qubits[5])
+#circuit.cx(q[0], q[3])
+#circuit.cx(q[1], q[4])
+#circuit.cx(q[2], q[5])
 
 # Exponential Dirac ##################################
 
-circuit.QFT(qubits[6], qubits[7]) # Check notation ####################################
+#qft = QFT(2)
+#circuit.append(qft, [q[6], q[7]])
 
-circuit.measure(qubits[6], output[6])
-circuit.measure(qubits[7], output[7])
+#circuit.measure(q[6], c[0])
+#circuit.measure(q[7], c[1])
 
 
 
@@ -59,6 +61,52 @@ time = np.linspace(0.0, 1.0, num=T, endpoint=True) # Time series times
 series = f(time) # Time series
 cloudx = series[:points] # Point Cloud x
 cloudy = series[tau:] # Point Cloud y
+
+
+##############################
+#          Gates             #
+##############################
+
+def H(n, qbits):
+    I = np.eye(2)
+    H2 = (1/np.sqrt(2))*np.array([[1, 1], [1, -1]])
+    had = 1
+#    if 0 in qbits:
+#       had = 1.0*H2
+#    else:
+#        had = np.eye(2)
+    for i in range(n):
+        if i in qbits:
+            had = np.kron(had, H2)
+        else:
+            had = np.kron(had, I)
+    return had
+
+def CX(n, control, qbit):
+    I = np.eye(2)
+    X = np.array([[0, 1], [1, 0]])
+    q0 = np.array([[1, 0], [0, 0]])
+    q1 = np.array([[0, 0], [0, 1]])
+    cxa = 1
+    cxb = 1
+    for i in range(n):
+        if i==control:
+            cxa = np.kron(cxa, I)
+            cxb = np.kron(cxb, X)
+        else if i==qbit:
+            cxa = np.kron(cxa, q0)
+            cxb = np.kron(cxb, q1)
+   return cxa + cxb
+
+def UB(n, qbits, dirac):
+    return 0
+
+def QFT(n, qbits):
+    return 0
+
+##############################
+#     Phase estimation       #
+##############################
 
 
 
