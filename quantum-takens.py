@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy import pi
+from numpy import e
 from numpy import linalg as LA
 #from math import comb as nCk
 #from itertools import combinations
@@ -98,11 +99,29 @@ def CX(n, control, qbit):
             cxb = np.kron(cxb, q1)
    return cxa + cxb
 
-def UB(n, qbits, dirac):
-    return 0
+def UB(m, dirac):
+    n, _ = dirac.shape
+    I = np.eye(2)
+    q0 = np.array([[1, 0], [0, 0]])
+    q1 = np.array([[0, 0], [0, 1]])
+    uba = 1
+    ubb = 1
+    for i in range(n):
+        uba = np.kron(uba, I)
+        ubb = np.kron(ubb, I)
+    # Update dirac with control in the last qubits #########################################
+    return uba + ubb
 
-def QFT(n, qbits):
-    return 0
+def QFT(n, m):
+    w = np.power(e, (2*pi/m)j)
+    I = np.eye(4*n)
+    fm = (1/np.power(m, 1/2))*np.ones(m,m)
+    for i in range(1, m):
+        for l in range(i, m):
+            fm[i, l] = np.power(w, i*l)
+            fm[l, i] = fm[i, l]
+    qft = np.kron(I, fm)
+    return qft
 
 ##############################
 #     Phase estimation       #
