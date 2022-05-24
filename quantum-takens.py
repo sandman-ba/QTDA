@@ -42,28 +42,18 @@ from scipy.linalg import expm
 ##############
 # Parameters #
 ##############
-#T = 9 # Number of data-times
-T = 5
-tau = 1 # Delay
-#tau = 2
-d = 2 # Dimension of point cloud
-e1 = 1.0 # First scale
 e2 = 1.5 # Second scale
 e3 = 2.0 # Third scale
 betk = 1 # Dimension for Betti number
 xi = 1.0 # Parameter for Dirac operator
-def f(x): return np.sin((2.0*pi)*x) # Time series function
 
 
-#####################
-# Values used often #
-#####################
-points = T - (tau*(d-1)) # Number of points
-time = np.linspace(0.0, 1.0, num=T, endpoint=True) # Time series times
-series = f(time) # Time series
-cloudx = series[:points] # Point Cloud x
-cloudy = series[tau:] # Point Cloud y
+##############################
+#      Dirac Operators       #
+##############################
 
+#dirac1 =
+#dirac2 = 
 
 ##############################
 #          Gates             #
@@ -73,10 +63,6 @@ def H(n, qbits):
     I = np.eye(2)
     H2 = (1/np.sqrt(2))*np.array([[1, 1], [1, -1]])
     had = 1
-#    if 0 in qbits:
-#       had = 1.0*H2
-#    else:
-#        had = np.eye(2)
     for i in range(n):
         if i in qbits:
             had = np.kron(had, H2)
@@ -93,19 +79,22 @@ def CX(n, control, qbit):
     cxb = 1
     for i in range(n):
         if i==control:
-            cxa = np.kron(cxa, I)
-            cxb = np.kron(cxb, X)
-        else if i==qbit:
             cxa = np.kron(cxa, q0)
             cxb = np.kron(cxb, q1)
-   return cxa + cxb
+        elif i==qbit:
+            cxa = np.kron(cxa, I)
+            cxb = np.kron(cxb, X)
+        else:
+            cxa = np.kron(cxa, I)
+            cxb = np.kron(cxb, I)
+    return cxa + cxb
 
 def UB(m, l, dirac):
     n, _ = dirac.shape
     I = np.eye(n)
     q0 = np.array([[1, 0], [0, 0]])
     q1 = np.array([[0, 0], [0, 1]])
-    ud = expm(((2*pi*l/m)j)*dirac)
+    ud = expm(((2*pi*l/m)*j)*dirac)
     ub = 1
     for i in range(m):
         ubma = 1
@@ -123,7 +112,7 @@ def UB(m, l, dirac):
     return np.kron(I, ub)
 
 def QFT(n, m):
-    w = np.power(e, (2*pi/m)j)
+    w = np.power(e, (2*pi/m)*j)
     I = np.eye(4*n)
     fm = (1/np.power(m, 1/2))*np.ones(m,m)
     for i in range(1, m):
@@ -139,3 +128,25 @@ def QFT(n, m):
 
 
 
+##############################
+#           Tests            #
+##############################
+
+#test1 = H(2, [1])
+#test2 = H(2, [0])
+#test3 = H(3, [0, 2])
+
+#print(f"{test1}")
+#print(f"{test2}")
+#print(f"{test3}")
+
+
+test4 = CX(2, 1, 0)
+test5 = CX(2, 0, 1)
+test6 = CX(3, 0, 1)
+test7 = CX(3, 0, 2)
+
+print(f"{test4}")
+print(f"{test5}")
+print(f"{test6}")
+print(f"{test7}")
