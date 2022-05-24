@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from numpy import pi
 from numpy import e
 from numpy import linalg as LA
+from scipy.linalg import expm
 #from math import comb as nCk
 #from itertools import combinations
 #from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
@@ -99,27 +100,36 @@ def CX(n, control, qbit):
             cxb = np.kron(cxb, q1)
    return cxa + cxb
 
-def UB(m, dirac):
+def UB(m, l, dirac):
     n, _ = dirac.shape
-    I = np.eye(2)
+    I = np.eye(n)
     q0 = np.array([[1, 0], [0, 0]])
     q1 = np.array([[0, 0], [0, 1]])
-    uba = 1
-    ubb = 1
-    for i in range(n):
-        uba = np.kron(uba, I)
-        ubb = np.kron(ubb, I)
-    # Update dirac with control in the last qubits #########################################
-    return uba + ubb
+    ud = expm(((2*pi*l/m)j)*dirac)
+    ub = 1
+    for i in range(m):
+        ubma = 1
+        ubmb = 1
+        for s in range(m):
+            if i == s:
+                ubma = np.kron(ubma, q0)
+                ubmb = np.kron(ubmb, q1)
+            else:
+                ubma = np.kron(ubma, q0 + q1)
+                ubmb = np.kron(ubmb, q0 + q1)
+        ubma = np.kron(I, ubma)
+        ubmb = np.kron(LA.matrix_power(ud, 2**(m-1-i)), ubmb)
+        ub = ub @ (ubma + ubmb)
+    return np.kron(I, ub)
 
 def QFT(n, m):
     w = np.power(e, (2*pi/m)j)
     I = np.eye(4*n)
     fm = (1/np.power(m, 1/2))*np.ones(m,m)
     for i in range(1, m):
-        for l in range(i, m):
-            fm[i, l] = np.power(w, i*l)
-            fm[l, i] = fm[i, l]
+        for s in range(i, m):
+            fm[i, s] = np.power(w, i*s)
+            fm[s, i] = fm[i, s]
     qft = np.kron(I, fm)
     return qft
 
