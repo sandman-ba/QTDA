@@ -4,8 +4,6 @@ from numpy import pi
 from numpy import e
 from numpy import linalg as LA
 from scipy.linalg import expm
-#from math import comb as nCk
-#from itertools import combinations
 #from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
 #from qiskit.circuit.library import QFT
 
@@ -30,6 +28,7 @@ from scipy.linalg import expm
 #circuit.cx(q[2], q[5])
 
 # Exponential Dirac ##################################
+# UnitaryGate function?
 
 #qft = QFT(2)
 #circuit.append(qft, [q[6], q[7]])
@@ -37,6 +36,7 @@ from scipy.linalg import expm
 #circuit.measure(q[6], c[0])
 #circuit.measure(q[7], c[1])
 
+#print(circuit)
 
 
 ##############
@@ -112,7 +112,7 @@ def UB(m, l, dirac):
         ub = ub @ (ubma + ubmb)
     return np.kron(I, ub)
 
-def QFT(n, M):
+def myQFT(n, M):
     m = 2**M
     w = np.power(e, (2*pi/m)*1j)
     I = np.eye(2**n, dtype = 'complex_')
