@@ -1,2 +1,3 @@
 *.py~
 figures/
+__pycache__/
