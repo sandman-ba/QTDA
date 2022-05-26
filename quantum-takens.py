@@ -4,40 +4,6 @@ from numpy import pi
 from numpy import e
 from numpy import linalg as LA
 from scipy.linalg import expm
-#from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
-#from qiskit.circuit.library import QFT
-
-
-##############################
-#        Circuit             #
-##############################
-
-#q = QuantumRegister(8, 'q')
-#c = ClassicalRegister(2, 'c')
-#circuit = QuantumCircuit(q, c)
-
-#circuit.h(q[0])
-#circuit.h(q[1])
-#circuit.h(q[2])
-
-#circuit.h(q[6])
-#circuit.h(q[7])
-
-#circuit.cx(q[0], q[3])
-#circuit.cx(q[1], q[4])
-#circuit.cx(q[2], q[5])
-
-# Exponential Dirac ##################################
-# UnitaryGate function?
-
-#qft = QFT(2)
-#circuit.append(qft, [q[6], q[7]])
-
-#circuit.measure(q[6], c[0])
-#circuit.measure(q[7], c[1])
-
-#print(circuit)
-
 
 ##############
 # Parameters #
@@ -137,7 +103,7 @@ def UB(m, l, dirac):
         ub = np.dot(ub, (ubma + ubmb))
     return np.kron(I, ub)
 
-def myQFT(n, M):
+def QFT(n, M):
     m = 2**M
     w = np.power(e, (2*pi/m)*1j)
     I = np.eye(2**n, dtype = 'complex_')
@@ -156,7 +122,7 @@ def myQFT(n, M):
 had1 = H(8, [0, 1, 2, 6, 7])
 cx1 = CX(8, 2, 5) @ (CX(8, 1, 4) @ CX(8, 0, 3))
 ub1 = UB(m1, l1, dirac1)
-qft1 = myQFT(6, m1)
+qft1 = QFT(6, m1)
 
 circuit1 = qft1 @ (ub1 @ (cx1 @ had1))
 
@@ -164,7 +130,7 @@ circuit1 = qft1 @ (ub1 @ (cx1 @ had1))
 had2 = H(9, [0, 1, 2, 4, 8])
 cx2 = CX(9, 3, 7) @ (CX(9, 2, 6) @ (CX(9, 1, 5) @ CX(9, 0, 4)))
 ub2 = UB(m2, l2, dirac2)
-qft2 = myQFT(8, m2)
+qft2 = QFT(8, m2)
 
 circuit2 = qft2 @ (ub2 @ (cx2 @ had2))
 
