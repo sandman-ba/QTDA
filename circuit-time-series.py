@@ -1,10 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from numpy import pi
-from numpy import e
-from numpy import linalg as LA
-from scipy.linalg import expm
 from quantumTakens import *
+from classicTakens import probp
 
 ##############
 # Parameters #
@@ -30,6 +27,8 @@ dirac1 = np.array(
     [ 0., -1.,  1.,  0.,  0.,  0.,  1.,  0.],
     [ 0.,  0., -1.,  1.,  0.,  0.,  0.,  1.]])
 
+probc1 = probp(l1, m1, dirac1)
+
 dirac2 = np.array(
     [[-1.,  0.,  0.,  0., -1., -1.,  0.,  0.,  0.,  0.,  0.,  0.],
      [ 0., -1.,  0.,  0.,  1.,  0., -1.,  0.,  0.,  0.,  0.,  0.],
@@ -46,6 +45,7 @@ dirac2 = np.array(
 
 dirac2 = np.block([[ dirac2, np.zeros((12, 4))], [np.zeros((4, 12)), np.zeros((4, 4))]])
 
+probc2 = probp(l2, m2, dirac2)
 
 ##############################
 #     Phase estimation       #
@@ -92,20 +92,44 @@ plt.bar(range(2**m1), 8*prob1[:,0])
 plt.ylim(0.0, 8.0)
 plt.xlim(-0.5, 2**m1 + 1)
 plt.title("Probability at e1", size = 24, weight = 'bold')
-plt.xlabel("lambda*l")
-plt.ylabel("P(lambda*l)")
+plt.xlabel("p")
+plt.ylabel("P(p)")
 
 
 #########################
 # Plotting scale 1 to 2 #
 #########################
 fig2 = plt.figure()
-plt.bar(range(2**m2), 12*prob2[:,0])
+plt.bar(range(2**m2), 16*prob2[:,0])
 plt.ylim(0.0, 12.0)
 plt.xlim(-0.5, 2**m2 + 1)
 plt.title("Probability from e1 to e2", size = 24, weight = 'bold')
-plt.xlabel("lambda*l")
-plt.ylabel("P(lambda*l)")
+plt.xlabel("p")
+plt.ylabel("P(p)")
+
+
+############################
+# Plotting scale 1 classic #
+############################
+fig3 = plt.figure()
+plt.bar(range(2**m1), 8*probc1)
+plt.ylim(0.0, 8.0)
+plt.xlim(-0.5, 2**m1 + 1)
+plt.title("Probability at e1 classic", size = 24, weight = 'bold')
+plt.xlabel("p")
+plt.ylabel("P(p)")
+
+
+#################################
+# Plotting scale 1 to 2 classic #
+#################################
+fig4 = plt.figure()
+plt.bar(range(2**m2), 16*probc2)
+plt.ylim(0.0, 12.0)
+plt.xlim(-0.5, 2**m2 + 1)
+plt.title("Probability from e1 to e2 classic", size = 24, weight = 'bold')
+plt.xlabel("p")
+plt.ylabel("P(p)")
 
 
 ################
@@ -113,4 +137,6 @@ plt.ylabel("P(lambda*l)")
 ################
 fig1.savefig("figures/prob-e1.png")
 fig2.savefig("figures/prob-e1-e2.png")
+fig3.savefig("figures/prob-e1-classic.png")
+fig4.savefig("figures/prob-e1-e2-classic.png")
 

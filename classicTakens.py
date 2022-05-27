@@ -76,4 +76,12 @@ def dirac(k, n, x, y, eps1, eps2, xi):
         ]) @ proj # Dirac operator
     return di
 
-
+# Probability Density for p
+def probp(l, m, diracop):
+    M = 2**m
+    eigen, _ = LA.eig(diracop)
+    n, _ = diracop.shape
+    prob= np.array(range(M), dtype = 'float_')
+    for i, p in enumerate(prob):
+        prob[i] = np.sum((np.sin(pi*l*eigen)/np.sin(pi*((l*eigen) - p)/M))**2)/(n*(M**2))
+    return prob
