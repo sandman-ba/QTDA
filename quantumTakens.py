@@ -4,6 +4,9 @@ from numpy import pi
 from numpy import e
 from numpy import linalg as LA
 from scipy.linalg import expm
+from qiskit.circuit.library import QFT as qiskitQFT
+from qiskit import QuantumCircuit
+from qiskit.quantum_info import Operator as qiskitOperator
 
 def H(n, qbits):
     I = np.eye(2)
@@ -58,15 +61,25 @@ def UB(m, l, dirac):
         ub = np.dot(ub, (ubma + ubmb))
     return np.kron(I, ub)
 
-def QFT(n, M):
-    m = 2**M
-    w = np.power(e, (2*pi/m)*1j)
+#def QFT(n, M):
+#    m = 2**M
+#    w = np.power(e, (-2*pi/m)*1j)
+#    I = np.eye(2**n, dtype = 'complex_')
+#    fm = (1/np.sqrt(m))*np.ones((m,m), dtype = 'complex_')
+#    for i in range(1, m):
+#        for s in range(i, m):
+#            fm[i, s] = np.power(w, i*s)
+#            fm[s, i] = fm[i, s]
+#    qft = np.kron(I, fm)
+#    return qft
+
+def QFT(n, m):
     I = np.eye(2**n, dtype = 'complex_')
-    fm = (1/np.sqrt(m))*np.ones((m,m), dtype = 'complex_')
-    for i in range(1, m):
-        for s in range(i, m):
-            fm[i, s] = np.power(w, i*s)
-            fm[s, i] = fm[i, s]
+    circ = QuantumCircuit(m)
+    circ.append(qiskitQFT(m), range(m))
+    op = qiskitOperator(circ)
+    fm = op.data
     qft = np.kron(I, fm)
     return qft
+
 
