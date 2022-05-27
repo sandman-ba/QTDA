@@ -10,9 +10,9 @@ from quantumTakens import *
 # Parameters #
 ##############
 l1 = 2
-l2 = 2
+l2 = 1
 m1 = 3
-m2 = 3
+m2 = 2
 xi = 1.0 # Parameter for Dirac operator
 
 
@@ -63,27 +63,26 @@ state1 = CX(9, 2, 5) @ state1
 state1 = UB(m1, l1, dirac1) @ state1
 state1 = QFT(6, m1) @ state1
 
-for i in range(2**m1):
-    prob1[i,0] = np.vdot(state1[p1 + i, 0], state1[p1 + i, 0])
+for i1 in range(2**m1):
+    prob1[i1,0] = np.vdot(state1[p1 + i1, 0], state1[p1 + i1, 0])
 
 
-state2 = np.zeros((2**11, 1), dtype = 'complex_')
+state2 = np.zeros((2**10, 1), dtype = 'complex_')
 state2[0,0] = 1
-p2 = np.array(range(0,2**11, 2**m2))
+p2 = np.array(range(0,2**10, 2**m2))
 prob2 = np.zeros((2**m2, 1))
 
-state2 = H(11, [0, 1, 2, 4, 8, 9, 10]) @ state2
-state2 = CX(11, 0, 4) @ state2
-state2 = CX(11, 1, 5) @ state2
-state2 = CX(11, 2, 6) @ state2
-state2 = CX(11, 3, 7) @ state2
+state2 = H(10, [0, 1, 2, 3, 8, 9]) @ state2
+state2 = CX(10, 0, 4) @ state2
+state2 = CX(10, 1, 5) @ state2
+state2 = CX(10, 2, 6) @ state2
+state2 = CX(10, 3, 7) @ state2
 state2 = UB(m2, l2, dirac2) @ state2
 state2 = QFT(8, m2) @ state2
 
-for i in range(2**m2):
-    prob2[i,0] = np.vdot(state2[p2 + i, 0], state2[p2 + i, 0])
+for i2 in range(2**m2):
+    prob2[i2,0] = np.vdot(state2[p2 + i2, 0], state2[p2 + i2, 0])
 
-print(f"{np.sum(prob2[:,0])}")
     
 ########################
 # Plotting scale 1     #
