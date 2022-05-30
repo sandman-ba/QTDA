@@ -83,5 +83,5 @@ def probp(l, m, diracop):
     n, _ = diracop.shape
     prob= np.array(range(M), dtype = 'float_')
     for i, p in enumerate(prob):
-        prob[i] = np.sum((np.sin(pi*l*eigen)/np.sin(pi*((l*eigen) - p)/M))**2)/(n*(M**2))
+        prob[i] = np.sum(((np.sin(pi*l*eigen) + (10**(-6)))/(np.sin(pi*((l*eigen) - p)/M) + (10**(-6)/M)))**2)/(n*(M**2))
     return prob
