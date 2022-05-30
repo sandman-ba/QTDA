@@ -72,6 +72,7 @@ dirac2 = np.array(
      [ 0.,  0.,  0.,  0.,  0.,  0.,  0.,  1.,  0.,  1.,  0.,  0.,  0., -1.]])
 
 dirac2 = np.block([[ dirac2, np.zeros((14, 2))], [np.zeros((2, 14)), np.zeros((2, 2))]])
+#dirac2 = np.block([[ np.zeros((2, 2)), np.zeros((2, 14))], [np.zeros((14, 2)), dirac2]])
 
 probc2 = probp(l2, m2, dirac2)
 

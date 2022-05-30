@@ -76,7 +76,7 @@ def UB(m, l, dirac):
 def QFT(n, m):
     I = np.eye(2**n, dtype = 'complex_')
     circ = QuantumCircuit(m)
-    circ.append(qiskitQFT(m), range(m))
+    circ.append(qiskitQFT(m, inverse=True), range(m))
     op = qiskitOperator(circ)
     fm = op.data
     qft = np.kron(I, fm)
