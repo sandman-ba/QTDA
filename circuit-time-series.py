@@ -85,8 +85,7 @@ state1[0,0] = 1
 p1 = np.array(range(0,2**q1, 2**m1))
 prob1 = np.zeros((2**m1, 1))
 
-#state1 = H(q1, chain(range(n1), range(2*n1, 2*n1 + m1))) @ state1
-state1 = H(q1, [0, 1, 2, 6, 7, 8]) @ state1
+state1 = H(q1, list( chain( range(n1), range(2*n1, 2*n1 + m1) ) ) ) @ state1
 state1 = CX(q1, 0, 3) @ state1
 state1 = CX(q1, 1, 4) @ state1
 state1 = CX(q1, 2, 5) @ state1
@@ -102,8 +101,7 @@ state2[0,0] = 1
 p2 = np.array(range(0,2**q2, 2**m2))
 prob2 = np.zeros((2**m2, 1))
 
-#state2 = H(q2, chain(range(n2), range(2*n2, 2*n2 + m2))) @ state2
-state2 = H(q2, [0, 1, 2, 3, 8, 9]) @ state2
+state2 = H(q2, list( chain( range(n2), range(2*n2, 2*n2 + m2) ) ) ) @ state2
 state2 = CX(q2, 0, 4) @ state2
 state2 = CX(q2, 1, 5) @ state2
 state2 = CX(q2, 2, 6) @ state2
@@ -166,8 +164,8 @@ plt.ylabel("P(p)")
 ################
 # Saving plots #
 ################
-fig1.savefig("figures/prob-e1.png")
-fig2.savefig("figures/prob-e1-e2.png")
-fig3.savefig("figures/prob-e1-classic.png")
-fig4.savefig("figures/prob-e1-e2-classic.png")
+fig1.savefig("figures/prob1-quantum.png")
+fig2.savefig("figures/prob2-quantum.png")
+fig3.savefig("figures/prob1-classic.png")
+fig4.savefig("figures/prob2-classic.png")
 

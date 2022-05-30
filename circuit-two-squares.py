@@ -43,6 +43,7 @@ state1[0,0] = 1
 p1 = np.array(range(0,2**9, 2**m1))
 prob1 = np.zeros((2**m1, 1))
 
+#state1 = H(q1, list( chain( range(n1), range(2*n1, 2*n1 + m1) ) ) ) @ state1
 state1 = H(9, [0, 1, 2, 6, 7, 8]) @ state1
 state1 = CX(9, 0, 3) @ state1
 state1 = CX(9, 1, 4) @ state1
