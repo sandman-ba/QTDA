@@ -89,15 +89,15 @@ prob2 = np.asarray(prob2, dtype=object)
 # Figure #
 ##########
 
-fig, ((ax1, ax2), (ax_l1, ax_l2), (ax_m1, ax_m2), (_, ax_reset)) = plt.subplots( 4, 2, figsize = (12, 6) )
+fig, (ax1, ax2) = plt.subplots( 1, 2 )
+plt.subplots_adjust(bottom = 0.25)
+
 
 ###########
 # Scale 1 #
 ###########
-bars1 = ax1.bar(range(2**m10), prob1[l10 - 1, m10 - 1])
-line1 = ax1.vlines(l10*xi, 0, 1, transform = ax1.get_xaxis_transform(), colors = 'r')
-#plt.ylim(0.0, dim1)
-#plt.xlim(-0.5, 2**m10 + 1)
+ax1.bar(range(2**m10), prob1[l10 - 1, m10 - 1])
+ax1.vlines(l10*xi, 0, 1, transform = ax1.get_xaxis_transform(), colors = 'r')
 ax1.set_title("Probability at scale 1")
 ax1.set_xlabel("p")
 ax1.set_ylabel("N x P(p)")
@@ -106,13 +106,10 @@ ax1.set_ylabel("N x P(p)")
 ######################
 # Scale 1 to Scale 2 #
 ######################
-bars2 = ax2.bar(range(2**m2), prob2[l20 - 1, m20 - 1])
-line2 = ax2.vlines(l20*xi, 0, 1, transform = ax1.get_xaxis_transform(), colors = 'r')
-#plt.ylim(0.0, dim2)
-#plt.xlim(-0.5, 2**m2 + 1)
+ax2.bar(range(2**m20), prob2[l20 - 1, m20 - 1])
+ax2.vlines(l20*xi, 0, 1, transform = ax2.get_xaxis_transform(), colors = 'r')
 ax2.set_title("Probability from scale 1 to 2")
 ax2.set_xlabel("p")
-#ax2.set_ylabel("P(p)")
 
 
 ###########
@@ -120,10 +117,10 @@ ax2.set_xlabel("p")
 ###########
 
 # Positions for the sliders
-#ax_l1 = plt.axes([?, 0.15, 0.3, 0.03])
-#ax_m1 = plt.axes([?, 0.1, 0.3, 0.03])
-#ax_l2 = plt.axes([?, 0.15, 0.3, 0.03])
-#ax_m2 = plt.axes([?, 0.1, 0.3, 0.03])
+ax_l1 = plt.axes([0.105, 0.15, 0.35, 0.03])
+ax_m1 = plt.axes([0.105, 0.1, 0.35, 0.03])
+ax_l2 = plt.axes([0.55, 0.15, 0.35, 0.03])
+ax_m2 = plt.axes([0.55, 0.1, 0.35, 0.03])
 
 slidel1 = Slider(
     ax_l1, "l", 1, l1max,
@@ -146,7 +143,7 @@ slidel2 = Slider(
 slidem2 = Slider(
     ax_m2, "m", 1, m2max,
     valinit = m20, valstep = 1,
-    color = 'color'
+    color = 'green'
 )
 
 ####################
@@ -157,17 +154,22 @@ slidem2 = Slider(
 def update1(val):
     l1 = slidel1.val
     m1 = slidem1.val
-    bars1.set_xdata(range(2**m1))
-    bars1.set_ydata(prob1[l1 - 1, m1 - 1])
-    line1.set_xdata(l1*xi)
+    ax1.clear()
+    ax1.bar(range(2**m1), prob1[l1 - 1, m1 - 1])
+    ax1.vlines(l1*xi, 0, 1, transform = ax1.get_xaxis_transform(), colors = 'r')
+    ax1.set_title("Probability at scale 1")
+    ax1.set_xlabel("p")
+    ax1.set_ylabel("N x P(p)")
     fig.canvas.draw_idle()
 
 def update2(val):
     l2 = slidel2.val
     m2 = slidem2.val
-    bars2.set_xdata(range(2**m2))
-    bars2.set_ydata(prob1[l2 - 1, m2 - 1])
-    line2.set_xdata(l2*xi)
+    ax2.clear()
+    ax2.bar(range(2**m2), prob2[l2 - 1, m2 - 1])
+    ax2.vlines(l2*xi, 0, 1, transform = ax2.get_xaxis_transform(), colors = 'r')
+    ax2.set_title("Probability from scale 1 to 2")
+    ax2.set_xlabel("p")
     fig.canvas.draw_idle()
 
 
@@ -176,7 +178,7 @@ slidem1.on_changed(update1)
 slidel2.on_changed(update2)
 slidem2.on_changed(update2)
 
-#ax_reset = plt.axes([0.8, 0.025, 0.1, 0.04]) # Location of reset button
+ax_reset = plt.axes([0.8, 0.025, 0.1, 0.04]) # Location of reset button
 button = Button(ax_reset, 'Reset', hovercolor = '0.975') # Reset button
 
 # Reset function activated by clicking reset button
