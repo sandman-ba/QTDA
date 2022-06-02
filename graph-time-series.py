@@ -56,30 +56,28 @@ print(f"The number of loops that persist from scale {e1} to scale {e2} is:\n {be
 ########################
 # Plotting Time series #
 ########################
-fig1 = plt.figure()
-plt.plot(time, series, 'o')
-plt.ylim(-1.2,1.2)
-plt.xlim(-0.2, 1.2)
-plt.title("Time Series", size = 24, weight = 'bold')
-plt.xlabel("time")
-plt.ylabel("sine")
+fig, (ax1, ax2) = plt.subplots(1, 2)
+ax1.plot(time, series, 'o-')
+#plt.ylim(-1.2,1.2)
+#plt.xlim(-0.2, 1.2)
+ax1.set_title("Time Series")
+ax1.set_xlabel("t")
+ax1.set_ylabel("sin(2*pi*t)")
 
 
 ########################
 # Plotting Point Cloud #
 ########################
-fig2 = plt.figure()
-plt.plot(cloudx, cloudy, 'o')
-plt.ylim(-1.2, 1.2)
-plt.xlim(-1.2, 1.2)
-plt.title("Point Cloud", size = 24, weight = 'bold')
-plt.xlabel("x(t)")
-plt.ylabel("x(t + tau)")
+ax2.plot(cloudx, cloudy, 'o')
+#plt.ylim(-1.2, 1.2)
+#plt.xlim(-1.2, 1.2)
+ax2.set_title("Point Cloud")
+ax2.set_xlabel("x(t)")
+ax2.set_ylabel("x(t + tau)")
 
 
 ################
 # Saving plots #
 ################
-fig1.savefig("figures/time-series.png")
-fig2.savefig("figures/point-cloud.png")
+fig.savefig("figures/time-series.png")
 
