@@ -99,64 +99,56 @@ for i2 in range(2**m2):
 ########################
 # Plotting scale 1     #
 ########################
-fig1 = plt.figure()
-ax1 = plt.gca()
-plt.bar(range(2**m1), dim1*prob1[:,0])
+fig1, (ax1, ax2) = plt.subplots(1, 2, figsize = (11, 4))
+ax1.bar(range(2**m1), dim1*prob1[:,0])
 ax1.vlines(l1*xi, 0, 1, transform = ax1.get_xaxis_transform(), colors = 'r') 
 #plt.ylim(0.0, dim1)
 #plt.xlim(-0.5, 2**m1 + 1)
-plt.title("Probability at e1", size = 24, weight = 'bold')
-plt.xlabel("p")
-plt.ylabel("P(p)")
+ax1.set_title("Scale eps1")
+ax1.set_xlabel("p")
+ax1.set_ylabel("P(p)")
 
 
 #########################
 # Plotting scale 1 to 2 #
 #########################
-fig2 = plt.figure()
-ax2 = plt.gca()
-plt.bar(range(2**m2), dim2*prob2[:,0])
+ax2.bar(range(2**m2), dim2*prob2[:,0])
 ax2.vlines(l2*xi, 0, 1, transform = ax2.get_xaxis_transform(), colors = 'r') 
 #plt.ylim(0.0, dim2)
 #plt.xlim(-0.5, 2**m2 + 1)
-plt.title("Probability from e1 to e2", size = 24, weight = 'bold')
-plt.xlabel("p")
-plt.ylabel("P(p)")
+ax2.set_title("Scale eps1 to eps2")
+ax2.set_xlabel("p")
+#ax2.ylabel("P(p)")
 
 
 ############################
 # Plotting scale 1 classic #
 ############################
-fig3 = plt.figure()
-ax3 = plt.gca()
-plt.bar(range(2**m1), dim1*probc1)
+fig2, (ax3, ax4) = plt.subplots(1, 2, figsize = (11, 4))
+ax3.bar(range(2**m1), dim1*probc1)
 ax3.vlines(l1*xi, 0, 1, transform = ax3.get_xaxis_transform(), colors = 'r') 
 #plt.ylim(0.0, dim1)
 #plt.xlim(-0.5, 2**m1 + 1)
-plt.title("Probability at e1 classic", size = 24, weight = 'bold')
-plt.xlabel("p")
-plt.ylabel("P(p)")
+ax3.set_title("Scale eps1 classic")
+ax3.set_xlabel("p")
+ax3.set_ylabel("P(p)")
 
 
 #################################
 # Plotting scale 1 to 2 classic #
 #################################
-fig4 = plt.figure()
-ax4 = plt.gca()
-plt.bar(range(2**m2), dim2*probc2)
+ax4.bar(range(2**m2), dim2*probc2)
 ax4.vlines(l2*xi, 0, 1, transform = ax4.get_xaxis_transform(), colors = 'r') 
 #plt.ylim(0.0, dim2)
 #plt.xlim(-0.5, 2**m2 + 1)
-plt.title("Probability from e1 to e2 classic", size = 24, weight = 'bold')
-plt.xlabel("p")
-plt.ylabel("P(p)")
+ax4.set_title("Scale eps1 to eps2 classic")
+ax4.set_xlabel("p")
+#ax4.set_ylabel("P(p)")
 
 
 ################
 # Saving plots #
 ################
-fig1.savefig("figures/prob1-quantum.png")
-fig2.savefig("figures/prob2-quantum.png")
-fig3.savefig("figures/prob1-classic.png")
-fig4.savefig("figures/prob2-classic.png")
+fig1.savefig("figures/prob-quantum.png")
+fig2.savefig("figures/prob-classic.png")
 

@@ -56,7 +56,7 @@ print(f"The number of loops that persist from scale {e1} to scale {e2} is:\n {be
 ########################
 # Plotting Time series #
 ########################
-fig, (ax1, ax2) = plt.subplots(1, 2)
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize = (11, 4))
 ax1.plot(time, series, 'o-')
 #plt.ylim(-1.2,1.2)
 #plt.xlim(-0.2, 1.2)
