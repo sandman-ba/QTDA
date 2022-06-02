@@ -9,16 +9,16 @@ from classicTakens import probp
 ##############
 xi = 1.0 # Parameter for Dirac operator
 
-l1 = 2 # Chosen to separate eigenvalues
+l1 = 3 # Chosen to separate eigenvalues
 n1 = 3 # Number of qubits for the Dirac operator
-m1 = 3 # Number of qubits for phase estimation (2**m > l*xi)
+m1 = 4 # Number of qubits for phase estimation (2**m > l*xi)
 
 q1 = 2*n1 + m1 # Total number of qubits in the circuit
 dim1 = 2**n1 # Dimension of Dirac operator
 
-l2 = 1 # Chosen to separate eigenvalues
+l2 = 3 # Chosen to separate eigenvalues
 n2 = 4 # Number of qubits for the Dirac operator
-m2 = 2 # Number of qubits for phase estimation (2**m > l*xi)
+m2 = 3 # Number of qubits for phase estimation (2**m > l*xi)
 
 q2 = 2*n2 + m2 # Total number of qubits in the circuit
 dim2 = 2**n2 # Dimension of Dirac operator
@@ -39,22 +39,6 @@ dirac1 = np.array(
 
 probc1 = probp(l1, m1, dirac1)
 
-#dirac2 = np.array(
-#    [[-1.,  0.,  0.,  0., -1., -1.,  0.,  0.,  0.,  0.,  0.,  0.],
-#     [ 0., -1.,  0.,  0.,  1.,  0., -1.,  0.,  0.,  0.,  0.,  0.],
-#     [ 0.,  0., -1.,  0.,  0.,  0.,  1., -1.,  0.,  0.,  0.,  0.],
-#     [ 0.,  0.,  0., -1.,  0.,  1.,  0.,  1.,  0.,  0.,  0.,  0.],
-#     [-1.,  1.,  0.,  0.,  1.,  0.,  0.,  0.,  1.,  1.,  0.,  0.],
-#     [-1.,  0.,  0.,  1.,  0.,  1.,  0.,  0.,  0., -1., -1.,  0.],
-#     [ 0., -1.,  1.,  0.,  0.,  0.,  1.,  0.,  1.,  0.,  0.,  1.],
-#     [ 0.,  0., -1.,  1.,  0.,  0.,  0.,  1.,  0.,  0.,  1.,  1.],
-#     [ 0.,  0.,  0.,  0.,  1.,  0.,  1.,  0., -1.,  0.,  0.,  0.],
-#     [ 0.,  0.,  0.,  0.,  1., -1.,  0.,  0.,  0., -1.,  0.,  0.],
-#     [ 0.,  0.,  0.,  0.,  0., -1.,  0.,  1.,  0.,  0., -1.,  0.],
-#     [ 0.,  0.,  0.,  0.,  0.,  0.,  1.,  1.,  0.,  0.,  0., -1.]])
-
-#dirac2 = np.block([[ dirac2, np.zeros((12, 4))], [np.zeros((4, 12)), np.zeros((4, 4))]])
-
 dirac2 = np.array(
     [[-1.,  0.,  0.,  0., -1.,  0., -1.,  0.,  0.,  0.,  0.,  0.,  0.,  0.],
      [ 0., -1.,  0.,  0.,  1.,  0.,  0., -1.,  0.,  0.,  0.,  0.,  0.,  0.],
@@ -72,7 +56,6 @@ dirac2 = np.array(
      [ 0.,  0.,  0.,  0.,  0.,  0.,  0.,  1.,  0.,  1.,  0.,  0.,  0., -1.]])
 
 dirac2 = np.block([[ dirac2, np.zeros((14, 2))], [np.zeros((2, 14)), np.zeros((2, 2))]])
-#dirac2 = np.block([[ np.zeros((2, 2)), np.zeros((2, 14))], [np.zeros((14, 2)), dirac2]])
 
 probc2 = probp(l2, m2, dirac2)
 
