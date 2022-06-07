@@ -27,15 +27,15 @@ cloudy = series[tau:] # Point Cloud y
 ########################
 # Plotting Time series #
 ########################
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize = (11, 4))
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize = (12, 4.5))
 time2 = np.linspace(0.0, 2.0, 100)
 ax1.plot(time2, f(time2), '-')
 ax1.plot(time, series, 'o')
 #plt.ylim(-1.2,1.2)
 #plt.xlim(-0.2, 1.2)
 ax1.set_title("Time Series")
-ax1.set_xlabel("t")
-ax1.set_ylabel("sin(2*pi*t)")
+ax1.set_xlabel("\(t\)")
+ax1.set_ylabel("\(x(t)\)")
 
 
 ########################
@@ -45,8 +45,8 @@ ax2.plot(cloudx, cloudy, 'o')
 #plt.ylim(-1.2, 1.2)
 #plt.xlim(-1.2, 1.2)
 ax2.set_title("Point Cloud")
-ax2.set_xlabel("x(t)")
-ax2.set_ylabel("x(t + tau)")
+ax2.set_xlabel("\(x(t)\)")
+ax2.set_ylabel("\(x(t + \tau)\)")
 
 
 ################
