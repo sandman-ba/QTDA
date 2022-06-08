@@ -54,3 +54,35 @@ ax2.set_ylabel("\(x(t + \tau)\)")
 ################
 fig.savefig("figures/time-series.png")
 
+
+######################
+# Plotting simplices #
+######################
+fig2, (ax3, ax4) = plt.subplots(1, 2, figsize = (11, 5))
+ax3.scatter(cloudx, cloudy, (e1 / 4.0 * 5 * 0.8 * 72)**2, alpha=0.8)
+ax3.plot(cloudx, cloudy, 'or')
+ax3.set_xlim(-2.0, 2.0)
+ax3.set_ylim(-2.0, 2.0)
+ax3.set_title(f"Scale \(\epsilon = {e1}\)")
+ax3.set_xlabel("\(x(t)\)")
+ax3.set_ylabel("\(x(t + \tau)\)")
+
+
+
+########################
+# Plotting Point Cloud #
+########################
+ax4.scatter(cloudx, cloudy, (e2 / 4.0 * 5 * 0.8 * 72)**2, alpha=0.8)
+ax4.plot(cloudx, cloudy, 'or')
+ax4.set_xlim(-2.0, 2.0)
+ax4.set_ylim(-2.0, 2.0)
+ax4.set_title(f"Scale \(\epsilon = {e2}\)")
+ax4.set_xlabel("\(x(t)\)")
+ax4.set_ylabel("\(x(t + \tau)\)")
+
+
+################
+# Saving plots #
+################
+fig2.savefig("figures/simplices.png")
+
