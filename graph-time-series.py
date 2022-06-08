@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.patches import Circle, Polygon
+from matplotlib.collections import PatchCollection
 from numpy import pi
 
 
@@ -59,7 +61,24 @@ fig.savefig("figures/time-series.png")
 # Plotting simplices #
 ######################
 fig2, (ax3, ax4) = plt.subplots(1, 2, figsize = (11, 5))
-ax3.scatter(cloudx, cloudy, (e1 / 4.0 * 5 * 0.8 * 72)**2, alpha=0.8)
+
+
+circles1 = []
+circles2 = []
+for x1, y1 in zip(cloudx, cloudy):
+    circle1 = Circle((x1, y1), e1/2)
+    circle2 = Circle((x1, y1), e2/2)
+    circles1.append(circle1)
+    circles2.append(circle2)
+p1 = PatchCollection(circles1, alpha=0.7)
+p2 = PatchCollection(circles2, alpha=0.7)
+lines1 = Polygon([ [cloudx[0], cloudy[0]], [cloudx[1], cloudy[1]], [cloudx[2], cloudy[2]], [cloudx[3], cloudy[3]]], alpha = 0.9, color='yellow', fill=False)
+lines2 = Polygon([ [cloudx[0], cloudy[0]], [cloudx[1], cloudy[1]], [cloudx[3], cloudy[3]], [cloudx[2], cloudy[2]]], alpha = 0.9, color='yellow', fill=False)
+lines3 = Polygon([ [cloudx[0], cloudy[0]], [cloudx[1], cloudy[1]], [cloudx[2], cloudy[2]], [cloudx[3], cloudy[3]]], alpha = 0.9, color='yellow', fill=False)
+tetra = Polygon([ [cloudx[0], cloudy[0]], [cloudx[1], cloudy[1]], [cloudx[2], cloudy[2]], [cloudx[3], cloudy[3]]], alpha = 0.6, color='green')
+
+ax3.add_collection(p1)
+ax3.add_patch(lines1)
 ax3.plot(cloudx, cloudy, 'or')
 ax3.set_xlim(-2.0, 2.0)
 ax3.set_ylim(-2.0, 2.0)
@@ -69,10 +88,10 @@ ax3.set_ylabel("\(x(t + \tau)\)")
 
 
 
-########################
-# Plotting Point Cloud #
-########################
-ax4.scatter(cloudx, cloudy, (e2 / 4.0 * 5 * 0.8 * 72)**2, alpha=0.8)
+ax4.add_collection(p2)
+ax4.add_patch(tetra)
+ax4.add_patch(lines3)
+ax4.add_patch(lines2)
 ax4.plot(cloudx, cloudy, 'or')
 ax4.set_xlim(-2.0, 2.0)
 ax4.set_ylim(-2.0, 2.0)
