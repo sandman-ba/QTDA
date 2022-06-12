@@ -62,9 +62,9 @@ fig1 = plt.figure()
 plt.bar(range(2**m1), 8*prob1[:,0])
 plt.ylim(0.0, 8.0)
 plt.xlim(-0.5, 2**m1 + 1)
-plt.title("Probability square quantum", size = 24, weight = 'bold')
-plt.xlabel("p")
-plt.ylabel("P(p)")
+plt.title("Probability square quantum")
+plt.xlabel("\(p\)")
+plt.ylabel("\(\mathcal{P}(p)\)")
 
 fig1.savefig("figures/prob-square-quantum.png")
 
@@ -76,9 +76,10 @@ fig2 = plt.figure()
 plt.bar(range(2**m1), 8*prob2)
 plt.ylim(0.0, 8.0)
 plt.xlim(-0.5, 2**m1 + 1)
-plt.title("Probability square classic", size = 24, weight = 'bold')
-plt.xlabel("p")
-plt.ylabel("P(p)")
+plt.title("Probability square classic")
+plt.xlabel("\(p\)")
+plt.ylabel("\(\mathcal{P}(p)\)")
+
 
 fig2.savefig("figures/prob-square-classic.png")
 
