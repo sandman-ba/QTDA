@@ -74,7 +74,13 @@ def dirac(k, n, x, y, eps1, eps2, xi):
         [ bound1.transpose() , (xi)*np.eye( rows2 ) , bound2 ],
         [np.zeros( (cols2, rows1) ) , bound2.transpose() , (-xi)*np.eye( cols2 ) ],
         ]) @ proj # Dirac operator
-    return di
+    di = di[~np.all(di == 0, axis=1)]
+    di = di[:, ~np.all(di == 0, axis=0)]
+    dim, _ = di.shape
+    n1 = np.ceil(np.log2(dim))
+    if (n1 - np.log2(dim) > 0):
+        di = np.block([[di, np.zeros((dim, 2**n1 -dim))], [np.zeros((2**n1 - dim, dim)), np.zeros((2**n1 - dim, 2**n1 - dim))]])
+    return (n1, di)
 
 # Probability Density for p
 def probp(l, m, diracop):
