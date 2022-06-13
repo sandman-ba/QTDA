@@ -31,21 +31,19 @@ cloudy = series[tau:] # Point Cloud y
 # Betti numbers #
 #################
 
-dirop1 = dirac(betk, points, cloudx, cloudy, e1, e1, xi) # Dirac operator
+n1, dirop1 = dirac(betk, points, cloudx, cloudy, e1, e1, xi) # Dirac operator
 print(f"{dirop1}")
-rank1 = LA.matrix_rank(dirop1) # Rank of Dirac operator
 eigen1, _ = LA.eig( dirop1 ) # Eigenvalues and eigenvectors of dirac operator
+print(f"Dirac operator acts on {n1} qubits")
 print(f"Eigenvalues:\n {eigen1}")
-print(f"The dimension of the Dirac operator at scale {e1} is {rank1}")
 betti1 = np.sum( np.absolute(eigen1 - 1.0) < 0.001 ) # Multiplicity of eigenvalue 1
 print(f"The number of loops that at scale {e1} is:\n {betti1}")
 
-dirop2 = dirac(betk, points, cloudx, cloudy, e1, e2, xi) # Dirac operator
+n2, dirop2 = dirac(betk, points, cloudx, cloudy, e1, e2, xi) # Dirac operator
 print(f"{dirop2}")
-rank2 = LA.matrix_rank(dirop2) # Rank of Dirac operator
 eigen2, _ = LA.eig( dirop2 ) # Eigenvalues and eigenvectors of dirac operator
+print(f"Dirac operator acts on {n2} qubits")
 print(f"Eigenvalues:\n {eigen2}")
-print(f"The dimension of the Dirac operator at scales {e1} and {e2} is {rank2}")
 betti2 = np.sum( np.absolute(eigen2 - 1.0) < 0.001 ) # Multiplicity of eigenvalue 1
 print(f"The number of loops that persist from scale {e1} to scale {e2} is:\n {betti2}")
 

@@ -17,7 +17,6 @@ ycoo = np.array([0.0, 0.0, 1.0, 1.0, 0.0, 0.0, s, s])
 #      Dirac Operators       #
 ##############################
 
-dirac1 = dirac(1, 8, xcoo, ycoo, 1.1, 1.5, xi)
-#dirac1 = dirac(1, 4, xcoo, ycoo, 1.1, 1.1, xi)
+n1, dirac1 = dirac(1, 8, xcoo, ycoo, 1.1, 1.5, xi)
 print(f"{dirac1}")
-print(f"{dirac1.shape}")
+print(f"{n1}")
