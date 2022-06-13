@@ -62,18 +62,20 @@ def projection(k, n, x, y, eps):
 def dirac(k, n, x, y, eps1, eps2, xi):
     bound1 = boundary(k, n) # k dimensional boundary matrix
     bound2 = boundary(k+1, n) # k-1 dimentional boundary matrix
+    proj1 = projection(k-1, n, x, y, eps1)
+    proj2 = projection(k, n, x, y, eps1)
+    proj3 = projection(k+1, n, x, y, eps2)
+    bound1 = bound1[proj1 > 0, :]
+    bound1 = bound1[:, proj2 > 0]
+    bound2 = bound2[proj2 > 0, :]
+    bound2 = bound2[:, proj3 > 0]
     rows1, cols1 = bound1.shape
     rows2, cols2 = bound2.shape
-    proj = np.block([
-        [ np.diag(projection(k-1, n, x, y, eps1)) , np.zeros( (rows1, cols1) ) , np.zeros( (rows1, cols2) ) ],
-        [ np.zeros( (cols1, rows1) ) , np.diag(projection(k, n, x, y, eps1)) , np.zeros( (rows2, cols2) ) ],
-        [ np.zeros( (cols2, rows1) ) , np.zeros( (cols2, rows2) ) , np.diag(projection(k+1, n, x, y, eps2)) ]
-        ]) # Projection operator
-    di = proj @ np.block([
+    di = np.block([
         [ (-xi)*np.eye( rows1 ) , bound1 , np.zeros( (rows1, cols2) ) ],
         [ bound1.transpose() , (xi)*np.eye( rows2 ) , bound2 ],
         [np.zeros( (cols2, rows1) ) , bound2.transpose() , (-xi)*np.eye( cols2 ) ],
-        ]) @ proj # Dirac operator
+        ]) # Dirac operator
     di = di[~np.all(di == 0, axis=1)]
     di = di[:, ~np.all(di == 0, axis=0)]
     dim, _ = di.shape
