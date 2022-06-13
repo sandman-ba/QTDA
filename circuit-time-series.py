@@ -69,9 +69,11 @@ p1 = np.array(range(0,2**q1, 2**m1))
 prob1 = np.zeros((2**m1, 1))
 
 state1 = H(q1, list( chain( range(n1), range(2*n1, 2*n1 + m1) ) ) ) @ state1
-state1 = CX(q1, 0, 3) @ state1
-state1 = CX(q1, 1, 4) @ state1
-state1 = CX(q1, 2, 5) @ state1
+for i1, i2 in zip(range(n1), range(n1, 2*n1)):
+    state1 = CX(q1, i1, i2) @ state1
+#state1 = CX(q1, 0, 3) @ state1
+#state1 = CX(q1, 1, 4) @ state1
+#state1 = CX(q1, 2, 5) @ state1
 state1 = UB(m1, l1, dirac1) @ state1
 state1 = QFT(2*n1, m1) @ state1
 
@@ -85,10 +87,12 @@ p2 = np.array(range(0,2**q2, 2**m2))
 prob2 = np.zeros((2**m2, 1))
 
 state2 = H(q2, list( chain( range(n2), range(2*n2, 2*n2 + m2) ) ) ) @ state2
-state2 = CX(q2, 0, 4) @ state2
-state2 = CX(q2, 1, 5) @ state2
-state2 = CX(q2, 2, 6) @ state2
-state2 = CX(q2, 3, 7) @ state2
+for i1, i2 in zip(range(n2), range(n2, 2*n2)):
+    state2 = CX(q2, i1, i2) @ state2
+#state2 = CX(q2, 0, 4) @ state2
+#state2 = CX(q2, 1, 5) @ state2
+#state2 = CX(q2, 2, 6) @ state2
+#state2 = CX(q2, 3, 7) @ state2
 state2 = UB(m2, l2, dirac2) @ state2
 state2 = QFT(2*n2, m2) @ state2
 
@@ -102,8 +106,6 @@ for i2 in range(2**m2):
 fig1, (ax1, ax2) = plt.subplots(1, 2, figsize = (11, 5))
 ax1.bar(range(2**m1), dim1*prob1[:,0])
 ax1.vlines(l1*xi, 0, 1, transform = ax1.get_xaxis_transform(), colors = 'r') 
-#plt.ylim(0.0, dim1)
-#plt.xlim(-0.5, 2**m1 + 1)
 ax1.set_title("Scale \(\epsilon_1\)")
 ax1.set_xlabel("\(p\)")
 ax1.set_ylabel("\(N\mathcal{P}(p)\)")
@@ -114,8 +116,6 @@ ax1.set_ylabel("\(N\mathcal{P}(p)\)")
 #########################
 ax2.bar(range(2**m2), dim2*prob2[:,0])
 ax2.vlines(l2*xi, 0, 1, transform = ax2.get_xaxis_transform(), colors = 'r') 
-#plt.ylim(0.0, dim2)
-#plt.xlim(-0.5, 2**m2 + 1)
 ax2.set_title("Scale \(\epsilon_1\) to \(\epsilon_2\)")
 ax2.set_xlabel("\(p\)")
 
@@ -126,8 +126,6 @@ ax2.set_xlabel("\(p\)")
 fig2, (ax3, ax4) = plt.subplots(1, 2, figsize = (11, 5))
 ax3.bar(range(2**m1), dim1*probc1)
 ax3.vlines(l1*xi, 0, 1, transform = ax3.get_xaxis_transform(), colors = 'r') 
-#plt.ylim(0.0, dim1)
-#plt.xlim(-0.5, 2**m1 + 1)
 ax3.set_title("Scale \(\epsilon_1\) classic")
 ax3.set_xlabel("\(p\)")
 ax3.set_ylabel("\(N\mathcal{P}(p)\)")
@@ -138,8 +136,6 @@ ax3.set_ylabel("\(N\mathcal{P}(p)\)")
 #################################
 ax4.bar(range(2**m2), dim2*probc2)
 ax4.vlines(l2*xi, 0, 1, transform = ax4.get_xaxis_transform(), colors = 'r') 
-#plt.ylim(0.0, dim2)
-#plt.xlim(-0.5, 2**m2 + 1)
 ax4.set_title("Scale \(\epsilon_1\) to \(\epsilon_2\) classic")
 ax4.set_xlabel("\(p\)")
 
