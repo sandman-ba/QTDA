@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from itertools import chain
 from quantumTakens import *
-from classicTakens import probp
+from classicTakens import *
 
 ##############
 # Parameters #

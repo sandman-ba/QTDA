@@ -80,9 +80,10 @@ def dirac(k, n, x, y, eps1, eps2, xi):
     di = di[:, ~np.all(di == 0, axis=0)]
     dim, _ = di.shape
     n1 = np.ceil(np.log2(dim))
+    n1 = n1.astype(np.int64)
     if (n1 - np.log2(dim) > 0):
-        di = np.block([[di, np.zeros((dim, 2**n1 -dim))], [np.zeros((2**n1 - dim, dim)), np.zeros((2**n1 - dim, 2**n1 - dim))]])
-    return (n1.astype(np.int64), di)
+        di = np.block([[di, np.zeros((dim, 2**n1 - dim))], [np.zeros((2**n1 - dim, dim)), np.zeros((2**n1 - dim, 2**n1 - dim))]])
+    return (n1, di)
 
 # Probability Density for p
 def probp(l, m, diracop):
