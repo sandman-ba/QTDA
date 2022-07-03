@@ -7,6 +7,7 @@ from classicTakens import *
 ##############
 # Parameters #
 ##############
+
 T = 5
 tau = 1 # Delay
 d = 2 # Dimension of point cloud
@@ -22,9 +23,11 @@ m1 = 5 # Number of qubits for phase estimation (2**m > l*xi)
 l2 = 4 # Chosen to separate eigenvalues
 m2 = 5 # Number of qubits for phase estimation (2**m > l*xi)
 
+
 #####################
 # Values used often #
 #####################
+
 points = T - (tau*(d-1)) # Number of points
 time = np.linspace(0.0, 1.0, num=T, endpoint=True) # Time series times
 series = f(time) # Time series
@@ -39,43 +42,14 @@ cloudy = series[tau:] # Point Cloud y
 n1, dirac1 = dirac(betk, points, cloudx, cloudy, e1, e1, xi)
 q1 = 2*n1 + m1
 dim1 = 2**n1 # Dimension of Dirac operator
-
-#dirac1 = np.array(
-#   [[-1.,  0.,  0.,  0., -1., -1.,  0.,  0.],
-#    [ 0., -1.,  0.,  0.,  1.,  0., -1.,  0.],
-#    [ 0.,  0., -1.,  0.,  0.,  0.,  1., -1.],
-#    [ 0.,  0.,  0., -1.,  0.,  1.,  0.,  1.],
-#    [-1.,  1.,  0.,  0.,  1.,  0.,  0.,  0.],
-#    [-1.,  0.,  0.,  1.,  0.,  1.,  0.,  0.],
-#    [ 0., -1.,  1.,  0.,  0.,  0.,  1.,  0.],
-#    [ 0.,  0., -1.,  1.,  0.,  0.,  0.,  1.]])
-
 probc1 = probp(l1, m1, dirac1)
 
 
 n2, dirac2 = dirac(betk, points, cloudx, cloudy, e1, e2, xi)
 q2 = 2*n2 + m2
 dim2 = 2**n2 # Dimension of Dirac operator
-
-#dirac2 = np.array(
-#    [[-1.,  0.,  0.,  0., -1.,  0., -1.,  0.,  0.,  0.,  0.,  0.,  0.,  0.],
-#     [ 0., -1.,  0.,  0.,  1.,  0.,  0., -1.,  0.,  0.,  0.,  0.,  0.,  0.],
-#     [ 0.,  0., -1.,  0.,  0.,  0.,  0.,  1.,  0., -1.,  0.,  0.,  0.,  0.],
-#     [ 0.,  0.,  0., -1.,  0.,  0.,  1.,  0.,  0.,  1.,  0.,  0.,  0.,  0.],
-#     [-1.,  1.,  0.,  0.,  1.,  0.,  0.,  0.,  0.,  0.,  1.,  1.,  0.,  0.],
-#     [ 0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.],
-#     [-1.,  0.,  0.,  1.,  0.,  0.,  1.,  0.,  0.,  0.,  0., -1., -1.,  0.],
-#     [ 0., -1.,  1.,  0.,  0.,  0.,  0.,  1.,  0.,  0.,  1.,  0.,  0.,  1.],
-#     [ 0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.],
-#     [ 0.,  0., -1.,  1.,  0.,  0.,  0.,  0.,  0.,  1.,  0.,  0.,  1.,  1.],
-#     [ 0.,  0.,  0.,  0.,  1.,  0.,  0.,  1.,  0.,  0., -1.,  0.,  0.,  0.],
-#     [ 0.,  0.,  0.,  0.,  1.,  0., -1.,  0.,  0.,  0.,  0., -1.,  0.,  0.],
-#     [ 0.,  0.,  0.,  0.,  0.,  0., -1.,  0.,  0.,  1.,  0.,  0., -1.,  0.],
-#     [ 0.,  0.,  0.,  0.,  0.,  0.,  0.,  1.,  0.,  1.,  0.,  0.,  0., -1.]])
-
-#dirac2 = np.block([[ dirac2, np.zeros((14, 2))], [np.zeros((2, 14)), np.zeros((2, 2))]])
-
 probc2 = probp(l2, m2, dirac2)
+
 
 ##############################
 #     Phase estimation       #
@@ -89,9 +63,6 @@ prob1 = np.zeros((2**m1, 1))
 state1 = H(q1, list( chain( range(n1), range(2*n1, 2*n1 + m1) ) ) ) @ state1
 for i1, i2 in zip(range(n1), range(n1, 2*n1)):
     state1 = CX(q1, i1, i2) @ state1
-#state1 = CX(q1, 0, 3) @ state1
-#state1 = CX(q1, 1, 4) @ state1
-#state1 = CX(q1, 2, 5) @ state1
 state1 = UB(m1, l1, dirac1) @ state1
 state1 = QFT(2*n1, m1) @ state1
 
@@ -107,10 +78,6 @@ prob2 = np.zeros((2**m2, 1))
 state2 = H(q2, list( chain( range(n2), range(2*n2, 2*n2 + m2) ) ) ) @ state2
 for i1, i2 in zip(range(n2), range(n2, 2*n2)):
     state2 = CX(q2, i1, i2) @ state2
-#state2 = CX(q2, 0, 4) @ state2
-#state2 = CX(q2, 1, 5) @ state2
-#state2 = CX(q2, 2, 6) @ state2
-#state2 = CX(q2, 3, 7) @ state2
 state2 = UB(m2, l2, dirac2) @ state2
 state2 = QFT(2*n2, m2) @ state2
 
