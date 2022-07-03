@@ -16,11 +16,11 @@ betk = 1 # Dimension for Betti number
 xi = 1.0 # Parameter for Dirac operator
 def f(x): return np.sin((2.0*pi)*x) # Time series function
 
-l1 = 3 # Chosen to separate eigenvalues
-m1 = 4 # Number of qubits for phase estimation (2**m > l*xi)
+l1 = 4 # Chosen to separate eigenvalues
+m1 = 5 # Number of qubits for phase estimation (2**m > l*xi)
 
-l2 = 3 # Chosen to separate eigenvalues
-m2 = 3 # Number of qubits for phase estimation (2**m > l*xi)
+l2 = 4 # Chosen to separate eigenvalues
+m2 = 5 # Number of qubits for phase estimation (2**m > l*xi)
 
 #####################
 # Values used often #
