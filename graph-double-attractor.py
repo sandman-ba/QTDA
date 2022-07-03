@@ -8,11 +8,9 @@ from numpy import pi
 ##############
 # Parameters #
 ##############
-T = 5
-tau = 1 # Delay
+T = 12
+tau = 2 # Delay
 d = 2 # Dimension of point cloud
-e1 = 1.5 # Second scale
-e2 = 2.0 # Third scale
 def f(x): return np.sin((2.0*pi)*x) + np.sin((4.0*pi)*x) # Time series function
 
 
