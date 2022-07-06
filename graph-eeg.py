@@ -17,23 +17,23 @@ d = 2 # Dimension of point cloud
 # Values used often #
 #####################
 data = pd.read_csv('data/eeg-data.csv')
+data = data.iloc[5857:,:]
 data = data.drop(columns = ['IndexId', 'Ref1', 'Ref2', 'Ref3', 'TS1', 'TS2'])
 data['time'] = data.reset_index().index
 
 #####################
 # Values used often #
 #####################
-T = data.time.size()
-points = T - (tau*(d-1)) # Number of points
-cloudx = data.Chanel1[:points] # Point Cloud x
-cloudy = data.Chanel1[tau:] # Point Cloud y
+points = data.time.size - (tau*(d-1)) # Number of points
+cloudx = data.Channel1[:points] # Point Cloud x
+cloudy = data.Channel1[tau:] # Point Cloud y
 
 
 ########################
 # Plotting Time series #
 ########################
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize = (12, 4.5))
-ax1.plot(data.time, data.Chanel1, '-')
+ax1.plot(data.time[:100], data.Channel1[:100], '-')
 ax1.set_title("Time Series")
 ax1.set_xlabel("\(t\)")
 ax1.set_ylabel("\(x(t)\)")
@@ -42,7 +42,7 @@ ax1.set_ylabel("\(x(t)\)")
 ########################
 # Plotting Point Cloud #
 ########################
-ax2.plot(cloudx, cloudy, 'o')
+ax2.plot(cloudx[:100], cloudy[:100], 'o')
 ax2.set_title("Point Cloud")
 ax2.set_xlabel("\(x(t)\)")
 ax2.set_ylabel("\(x(t + \tau)\)")
