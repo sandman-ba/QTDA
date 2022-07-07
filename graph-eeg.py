@@ -25,15 +25,15 @@ data['time'] = data.reset_index().index
 # Values used often #
 #####################
 points = data.time.size - (tau*(d-1)) # Number of points
-cloudx = data.Channel1[:points] # Point Cloud x
-cloudy = data.Channel1[tau:] # Point Cloud y
+cloudx = data.Channel2[:points] # Point Cloud x
+cloudy = data.Channel2[tau:] # Point Cloud y
 
 
 ########################
 # Plotting Time series #
 ########################
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize = (12, 4.5))
-ax1.plot(data.time[:100], data.Channel1[:100], '-')
+ax1.plot(data.time[100:200], data.Channel2[100:200], '-')
 ax1.set_title("Time Series")
 ax1.set_xlabel("\(t\)")
 ax1.set_ylabel("\(x(t)\)")
@@ -42,7 +42,7 @@ ax1.set_ylabel("\(x(t)\)")
 ########################
 # Plotting Point Cloud #
 ########################
-ax2.plot(cloudx[:100], cloudy[:100], 'o')
+ax2.plot(cloudx[100:200], cloudy[100:200], 'o')
 ax2.set_title("Point Cloud")
 ax2.set_xlabel("\(x(t)\)")
 ax2.set_ylabel("\(x(t + \tau)\)")
