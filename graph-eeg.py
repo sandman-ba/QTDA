@@ -14,7 +14,7 @@ d = 2 # Dimension of point cloud
 
 
 #####################
-# Values used often #
+#  Data processing  #
 #####################
 data = pd.read_csv('data/eeg-data.csv')
 data = data.iloc[5857:,:]
