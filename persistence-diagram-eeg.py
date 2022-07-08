@@ -14,8 +14,8 @@ k = 1 # Dimension for Betti number
 xi = 1.0 # Parameter for Dirac operator
 l = 10 # Chosen to separate eigenvalues
 m = 10 # Number of qubits for phase estimation (2**m > l*xi)
-#scales = product(range(1, 21), repeat=2)
-scales = product(range(1, 3), repeat=2)
+scales = product(range(1, 21), repeat=2)
+#scales = product(range(1, 3), repeat=2)
 
 
 #####################
