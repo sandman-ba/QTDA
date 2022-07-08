@@ -85,6 +85,17 @@ def dirac(k, n, x, y, eps1, eps2, xi):
         di = np.block([[di, np.zeros((dim, 2**n1 - dim))], [np.zeros((2**n1 - dim, dim)), np.zeros((2**n1 - dim, 2**n1 - dim))]])
     return (n1, di)
 
+
+# Persistent Betti Number
+def persistentBetti(eps1, eps2, k, n, x, y, xi, l, m):
+    _, di = dirac(k, n, x, y, eps1, eps2, xi)
+    eigen, _ = LA.eig(di)
+    M = 2**m
+    p = l*xi
+    prob = np.sum(((np.sin(pi*l*eigen) + (10**(-6)))/(np.sin(pi*((l*eigen) - p)/M) + (10**(-6)/M)))**2)/(M**2)
+    return prob
+
+
 # Probability Density for p
 def probp(l, m, diracop):
     M = 2**m
