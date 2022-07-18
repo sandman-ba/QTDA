@@ -12,10 +12,8 @@ tau = 2 # Delay
 d = 2 # Dimension of point cloud
 k = 1 # Dimension for Betti number
 xi = 1.0 # Parameter for Dirac operator
-l = 10 # Chosen to separate eigenvalues
-m = 10 # Number of qubits for phase estimation (2**m > l*xi)
-scales = product(range(1, 21), repeat=2)
-#scales = product(range(1, 3), repeat=2)
+#scales = product(range(1, 21), repeat=2)
+scales = product(range(16, 19), repeat=2)
 
 
 #####################
@@ -44,7 +42,7 @@ def betti(eps):
     eps1, eps2 = eps
     if (eps1 > eps2):
         return 0.0
-    return persistentBetti(eps1, eps2, k, points, cloudx, cloudy, xi, l, m)
+    return persistentBetti(eps1, eps2, k, points, cloudx, cloudy, xi)
 
 with concurrent.futures.ProcessPoolExecutor() as executor:
     bettis = executor.map(betti, scales)

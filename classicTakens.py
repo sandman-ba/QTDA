@@ -59,7 +59,7 @@ def projection(k, n, x, y, eps):
 
 
 # Persistent Dirac Operator
-def dirac(k, n, x, y, eps1, eps2, xi):
+def dirac(k, n, x, y, eps1, eps2, xi, mode=0):
     bound1 = boundary(k, n) # k dimensional boundary matrix
     bound2 = boundary(k+1, n) # k-1 dimentional boundary matrix
     proj1 = projection(k-1, n, x, y, eps1)
@@ -83,16 +83,25 @@ def dirac(k, n, x, y, eps1, eps2, xi):
     n1 = n1.astype(np.int64)
     if (n1 - np.log2(dim) > 0):
         di = np.block([[di, np.zeros((dim, 2**n1 - dim))], [np.zeros((2**n1 - dim, dim)), np.zeros((2**n1 - dim, 2**n1 - dim))]])
+    if (mode > 0.5):
+        return di
     return (n1, di)
 
 
 # Persistent Betti Number
-def persistentBetti(eps1, eps2, k, n, x, y, xi, l, m):
-    _, di = dirac(k, n, x, y, eps1, eps2, xi)
-    eigen, _ = LA.eig(di)
-    M = 2**m
+def persistentBetti(eps1, eps2, k, n, x, y, xi):
+    eigen, _ = LA.eig(dirac(k, n, x, y, eps1, eps2, xi, 1))
+    eigen2 = np.abs(eigen - xi)
+    eigen2 = eigen2[eigen2 > 10**(-6)]
+    l = 2 * np.ceil(1/np.amin(eigen2))
+    eigen = l * eigen
+    eigen2 = 0
+    M = np.amax(np.abs(eigen))
+    M = np.ceil(np.log2(M))
+    M = 2**M
     p = l*xi
-    prob = np.sum(((np.sin(pi*l*eigen) + (10**(-6)))/(np.sin(pi*((l*eigen) - p)/M) + (10**(-6)/M)))**2)/(M**2)
+    prob = np.sum(((np.sin(pi*eigen) + (10**(-6)))/(np.sin(pi*(eigen - p)/M) + (10**(-6)/M)))**2)/(M**2)
+    print(f"Betti for {eps1} to {eps2} is: {prob}")
     return prob
 
 
