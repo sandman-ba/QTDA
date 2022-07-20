@@ -13,7 +13,8 @@ d = 2 # Dimension of point cloud
 k = 1 # Dimension for Betti number
 xi = 1.0 # Parameter for Dirac operator
 #scales = product(range(1, 21), repeat=2)
-scales = product(range(16, 19), repeat=2)
+scales = range(16, 19)
+N = 3 # Number of scales
 
 
 #####################
@@ -45,12 +46,15 @@ def betti(eps):
     return persistentBetti(eps1, eps2, k, points, cloudx, cloudy, xi)
 
 with concurrent.futures.ProcessPoolExecutor() as executor:
-    bettis = executor.map(betti, scales)
+    bettis = executor.map(betti, product(scales, reversed(scales)))
 
-for b in bettis:
-    print(b)
-    
-#bettis = np.asarray(bettis)
+bettis = np.fromiter(bettis, np.cdouble)
+bettis = bettis.reshape((N,N))
+bettis = bettis.T
+
+np.savetxt("results/scales.out", np.fromiter(scales, np.double))
+np.savetxt("results/bettis.out", bettis)
+
 
 
 ##########
