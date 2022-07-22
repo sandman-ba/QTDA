@@ -59,17 +59,17 @@ for i in range(N):
 ##########
 # Figure #
 ##########
-#fig, (ax1, ax2) = plt.subplots( 1, 2 )
-#plt.subplots_adjust(bottom = 0.25)
+fig, ax = plt.subplots(1, 1)
 
-#ax1.bar(range(2**m10), prob1[l10 - 1, m10 - 1])
-#ax1.vlines(l10*xi, 0, 1, transform = ax1.get_xaxis_transform(), colors = 'r')
-#ax1.set_title("Probability at scale 1")
-#ax1.set_xlabel("p")
-#ax1.set_ylabel("N x P(p)")
+cax = ax.matshow(bettis)
+fig.colorbar(cax)
+ax.set_xticklabels([''] + scales)
+ax.set_yticklabels([''] + scales[::-1])
+ax.xaxis.set_ticks_position('bottom')
+ax.set_title("Persistence Diagram Squares")
+ax.set_xlabel("Birth")
+ax.set_ylabel("Death")
 
-plt.matshow(bettis)
-plt.colorbar()
-plt.show()
-
+#plt.show()
+fig.savefig("figures/diagram-squares.png")
 
