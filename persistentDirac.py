@@ -1,15 +1,13 @@
 import numpy as np
 from math import comb as nCk
-from itertools import combinations
+from itertools import combinations, product
 import membershipVR as MVR
-import memebrshipTakensVR as MTVR
 
-# k-simplices
+# Create iterable with all possible k-simplices
 def kcomplex(k, n):
-    comp = np.zeros( (nCk(n,k+1), n) )
-    for row, combo in enumerate( np.array( list( combinations( range(n), k+1) ) ) ):
-        comp[row][combo] = 1
-    return comp
+    for simplex in product(range(2), repeat=n):
+        if sum(simplex) == k:
+            yield simplex
 
 # Get coefficient of boundary matrix
 def isface(face, simplex):
@@ -72,4 +70,11 @@ def dirac(k, n, x, y, eps1, eps2, xi, mode=0):
     if (mode > 0.5):
         return di
     return (n1, di)
+
+def UB(series, k, eps1, eps2, xi):
+    dirop = dirac(series, k, eps1, eps2, xi, 1)
+    m, l = parameters(data)
+    M = 2**m
+    ub = expm(((2*pi*l/M)*1j)*dirop)
+    return ub
 
