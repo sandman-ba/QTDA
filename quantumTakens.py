@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from numpy import pi
 from numpy import e
 from numpy import linalg as LA

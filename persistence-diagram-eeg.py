@@ -12,8 +12,8 @@ tau = 2 # Delay
 d = 2 # Dimension of point cloud
 k = 1 # Dimension for Betti number
 xi = 1.0 # Parameter for Dirac operator
-N = 3 # Number of scales
-eps0 = 16 # Smallest scale
+N = 10 # Number of scales
+eps0 = 10 # Smallest scale
 epsStep = 1.0 # Step between scales
 
 
@@ -77,8 +77,8 @@ fig, ax = plt.subplots(1, 1)
 
 cax = ax.matshow(bettis)
 fig.colorbar(cax)
-ax.set_xticklabels([''] + scales)
-ax.set_yticklabels([''] + scales[::-1])
+ax.set_xticklabels([''] + scales[::2])
+ax.set_yticklabels([''] + scales[::-2])
 ax.xaxis.set_ticks_position('bottom')
 ax.set_title("Persistence Diagram EEG")
 ax.set_xlabel("Birth")
