@@ -1,13 +1,34 @@
 import numpy as np
 from numpy import linalg as LA
 
-# Simplex diameter
-def diameter(simplex, x, y, eps):
-    vertx = x[simplex > 0.5] # x coordinate of vertices in simplex
-    verty = y[simplex > 0.5] # y coordinate of vertices in simplex
-    for a, b in zip(vertx,verty):
-        for c, d in zip(vertx, verty):
-            if LA.norm( np.array( [a - c, b - d] ), np.inf ) > eps: # If diameter is larger than eps return 0
-                return 0
-    return 1 # Otherwise return 1
+# Distance Oracle Point Cloud
+def distanceOracle(data, i, j, eps, mode=None):
+    if mode is None:
+        if (np.abs(data[i] - data[j]) > eps):
+            return 0
+        return 1
+    else:
+        if (LA.norm( data[:,i] - data[:,j]) > eps):
+            return 0
+    return 1
+
+# Memebrship Oracle
+def memebrshipOracle(simplex, data, eps, tau=None, d=2):
+    if tau is None:
+        for i, vi in enumerate(simplex):
+            if (vi > 0.5):
+                for j, vj in enumerate(simplex[i:]):
+                    if (vj > 0.5):
+                        if (distanceOracle(data, i, j, eps) < 0.5):
+                            return 0
+        return 1
+    else:
+        for i, vi in enumerate(simplex):
+            if (vi > 0.5):
+                for j, vj in enumerate(simplex[i:]):
+                    if (vj > 0.5):
+                        for t in range(d):
+                            if (distanceOracle(data, i + (t * tau), j + (t * tau), eps) < 0.5):
+                                return 0
+        return 1
 
