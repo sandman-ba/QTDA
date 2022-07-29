@@ -10,7 +10,7 @@ def kcomplex(k, n):
             yield simplex
 
 # Get coefficient of boundary matrix
-def isface(face, simplex):
+def boundaryOracle(face, simplex):
     index = 0
     diff = 0
     for vf, vs in zip(face, simplex):
@@ -28,17 +28,15 @@ def isface(face, simplex):
     return (-1)**power
 
 
-# Boundary
+# Boundary Matrix
 def boundary(k, n):
-    comp1 = kcomplex(k-1, n) # simplices dimension k-1
-    comp2 = kcomplex(k, n) # simplices dimension k
-    faces, _ = comp1.shape # number of simplices dimension k-1
-    simp, _ = comp2.shape # number of simplices dimension k
-    bound = np.zeros( (faces, simp) )
-    for row, face in enumerate(comp1):
-        for col, simplex in enumerate(comp2):
-            bound[row,col] = isface(face, simplex)
-    return bound
+    bound = []
+    for face in kcomplex(k-1, n):
+        row = []
+        for simplex in kcomplex(k, n):
+            row.append(boundaryOracle(face, simplex))
+        bound.append(row)
+    return np.array(bound)
 
 
 # Projection
