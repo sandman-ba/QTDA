@@ -119,15 +119,16 @@ def diracPointCloud(data, k, eps1, eps2, xi):
 
 def UB(data, k, eps1, eps2, tau=None, d=2, xi=1):
     if tau is None:
-        q1, dirop = diracPointCloud(data, k, eps1, eps2, xi)
+        q1, ub = diracPointCloud(data, k, eps1, eps2, xi)
     else:
-        q1, dirop = diracTimeSeries(data, k, eps1, eps2, tau, d, xi)
-    eigen = eigsh(dirop - (xi * np.eye(2**q1)), 2**(q1-1), sigma=0.000001, which='LM', return_eigenvectors=False)
-    eigen = eigen[eigen > 0]
-    l = np.maximum(np.ceil(1/np.amin(eigen)), 2)
-    eigen = 0
-    m = eigsh(dirop, 1, which='LM', return_eigenvectors=False)[0] * l * 2
+        q1, ub = diracTimeSeries(data, k, eps1, eps2, tau, d, xi)
+    gap = eigsh(ub - (xi * np.eye(2**q1)), 2**(q1-1), sigma=0.000001, which='LM', return_eigenvectors=False)
+    gap = gap[gap > 0]
+    gap = np.amin(gap)
+    l = np.maximum(np.ceil(1/gap), 2)
+    m = eigsh(ub, 1, which='LM', return_eigenvectors=False)[0] * l
+    m = np.ceil(np.log2(m)) + 1
     M = 2**m
-    ub = expm(((2*pi*l/M)*1j)*dirop)
+    ub = expm(((2*pi*l/M)*1j)*ub)
     return (l, m, q1, ub)
 
