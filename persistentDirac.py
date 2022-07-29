@@ -11,12 +11,20 @@ def kcomplex(k, n):
 
 # Get coefficient of boundary matrix
 def isface(face, simplex):
-    if (simplex.sum() - face.sum()) < 0.5:
-        return 0 # Not a face if it's of higher dimension
-    diff = face + simplex # Difference, i.e. get rid of repeated vertices
-    if np.sum( np.absolute( diff - 1.0 ) < 0.5 ) > 1.0:
-        return 0 # Not a face if difference is more than one vertex
-    power = np.argmin( diff[ diff > 0.5 ] ) # Position of the missing vertex determines the sign
+    index = 0
+    diff = 0
+    for vf, vs in zip(face, simplex):
+        if vf == 1:
+            if vs == 0:
+                return 0 # If face has vertex that simplex doesn't, return 0
+            else:
+                index += 1
+        else:
+            if vs == 1:
+                diff += 1
+                if diff > 1:
+                    return 0 # If simplex has more than one extra vertex, return 0
+                power = index
     return (-1)**power
 
 
