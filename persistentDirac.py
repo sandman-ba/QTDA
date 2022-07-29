@@ -1,4 +1,5 @@
 import numpy as np
+from numpy import pi
 from scipy.sparse.linalg import expm, eigsh
 from itertools import product
 from membershipVR import *
@@ -6,7 +7,7 @@ from membershipVR import *
 # Create iterable with all possible k-simplices
 def kcomplex(k, n):
     for simplex in product(range(2), repeat=n):
-        if sum(simplex) == k:
+        if sum(simplex) == k + 1:
             yield simplex
 
 # Get coefficient of boundary matrix
@@ -42,18 +43,18 @@ def boundary(k, n):
 # Projection Operator for Time Series
 def projectionTimeSeries(data, k, n, eps, tau, d):
     proj = [membershipOracleTakens(simplex, data, eps, tau, d) for simplex in kcomplex(k, n)]
-    return proj
+    return np.array(proj)
 
 
 # Projection Operator for Point Clouds
 def projectionPointCloud(data, k, n, eps):
     proj = [membershipOracle(simplex, data, eps) for simplex in kcomplex(k, n)]
-    return proj
+    return np.array(proj)
 
 
 # Persistent Dirac Operator for Time Series
 def diracTimeSeries(data, k, eps1, eps2, tau, d, xi):
-    n = data.shape
+    n = data.shape[0] - (tau * d)
     bound1 = boundary(k, n) # k dimensional boundary matrix
     bound2 = boundary(k+1, n) # k-1 dimentional boundary matrix
     # Boundary Operators Restricted to Relevant Scales
