@@ -40,11 +40,8 @@ def boundary(k, n):
 
 
 # Projection
-def projection(k, n, x, y, eps):
-    comp = kcomplex(k, n) # k-simplices
-    proj = np.zeros( comp.shape[0] )
-    for i, simp in enumerate(comp):
-        proj[i] = diameter(simp, x, y, eps)
+def projection(data, k, n, eps, tau=None, d=2):
+    proj = [membershipOracle(simplex, data, eps) for simplex in kcomplex(k, n)]
     return proj
 
 
