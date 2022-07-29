@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.linalg import expm
+from scipy.sparse.linalg import expm, eigsh
 from itertools import product
 from membershipVR import *
 
@@ -117,10 +117,17 @@ def diracPointCloud(data, k, eps1, eps2, xi):
     return (q1, di)
 
 
-def UB(series, k, eps1, eps2, xi):
-    dirop = dirac(series, k, eps1, eps2, xi, 1)
-    m, l = parameters(data)
+def UB(data, k, eps1, eps2, tau=None, d=2, xi=1):
+    if tau is None:
+        q1, dirop = diracPointCloud(data, k, eps1, eps2, xi)
+    else:
+        q1, dirop = diracTimeSeries(data, k, eps1, eps2, tau, d, xi)
+    eigen = eigsh(dirop - (xi * np.eye(2**q1)), 2**(q1-1), sigma=0.000001, which='LM', return_eigenvectors=False)
+    eigen = eigen[eigen > 0]
+    l = np.maximum(np.ceil(1/np.amin(eigen)), 2)
+    eigen = 0
+    m = eigsh(dirop, 1, which='LM', return_eigenvectors=False)[0] * l * 2
     M = 2**m
     ub = expm(((2*pi*l/M)*1j)*dirop)
-    return ub
+    return (l, m, q1, ub)
 
