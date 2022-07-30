@@ -4,47 +4,60 @@ from numpy import linalg as LA
 from classicTakens import *
 
 
-##############
-# Parameters #
-##############
-T = 5
+T = 5 # Number of points
+k = 1 # Dimension for Betti number
 tau = 1 # Delay
-d = 2 # Dimension of point cloud
 e1 = 1.5 # Second scale
 e2 = 2.0 # Third scale
-betk = 1 # Dimension for Betti number
-xi = 1.0 # Parameter for Dirac operator
 def f(x): return np.sin((2.0*pi)*x) # Time series function
-
-
-#####################
-# Values used often #
-#####################
-points = T - (tau*(d-1)) # Number of points
 time = np.linspace(0.0, 1.0, num=T, endpoint=True) # Time series times
-series = f(time) # Time series
-cloudx = series[:points] # Point Cloud x
-cloudy = series[tau:] # Point Cloud y
+data = f(time) # Time series
 
 
-#################
-# Betti numbers #
-#################
+#print(data)
 
-n1, dirop1 = dirac(betk, points, cloudx, cloudy, e1, e1, xi) # Dirac operator
-print(f"{dirop1}")
-eigen1, _ = LA.eig( dirop1 ) # Eigenvalues and eigenvectors of dirac operator
-print(f"Dirac operator acts on {n1} qubits")
-print(f"Eigenvalues:\n {eigen1}")
-betti1 = np.sum( np.absolute(eigen1 - 1.0) < 0.001 ) # Multiplicity of eigenvalue 1
-print(f"The number of loops that at scale {e1} is:\n {betti1}")
+#print(distanceOracle(data, 2, 3, eps1))
+#print(membershipOracle((0, 0, 1, 1), data, eps1))
 
-n2, dirop2 = dirac(betk, points, cloudx, cloudy, e1, e2, xi) # Dirac operator
-print(f"{dirop2}")
-eigen2, _ = LA.eig( dirop2 ) # Eigenvalues and eigenvectors of dirac operator
-print(f"Dirac operator acts on {n2} qubits")
-print(f"Eigenvalues:\n {eigen2}")
-betti2 = np.sum( np.absolute(eigen2 - 1.0) < 0.001 ) # Multiplicity of eigenvalue 1
-print(f"The number of loops that persist from scale {e1} to scale {e2} is:\n {betti2}")
+#for simplex in kcomplex(k, n):
+#    print(simplex)
+#    print(membershipOracle(simplex, data, eps1))
+#    for face in kcomplex(k-1,n):
+#        print(face)
+#        print(boundaryOracle(face, simplex))
+
+#print(boundary(k, n))
+#print(boundary(k+1, n))
+
+
+#print(projectionPointCloud(data, k-1, n, eps1))
+#print(projectionPointCloud(data, k, n, eps1))
+#print(projectionPointCloud(data, k+1, n, eps2))
+
+#bound1 = boundary(k, n)
+#bound2 = boundary(k+1, n)
+#proj1 = projectionPointCloud(data, k-1, n, eps1)
+#proj2 = projectionPointCloud(data, k, n, eps1)
+#proj3 = projectionPointCloud(data, k+1, n, eps2)
+#bound1 = bound1[proj1 > 0, :]
+#bound1 = bound1[:, proj2 > 0]
+#bound2 = bound2[proj2 > 0, :]
+#bound2 = bound2[:, proj3 > 0]
+
+#print(bound1)
+#print(bound2)
+
+
+#print(diracPointCloud(data, k, eps1, eps2, 1)[1])
+
+#l, m, q1, ub = UB(data, k, eps1, eps2)
+#print(l)
+#print(m)
+#print(q1)
+#print(ub)
+
+#print(persistentBetti(data, k, eps1, eps1))
+#print(persistentBetti(data, k, eps1, eps2))
+
 
 

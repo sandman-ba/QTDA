@@ -54,7 +54,7 @@ def projectionPointCloud(data, k, n, eps):
 
 # Persistent Dirac Operator for Time Series
 def diracTimeSeries(data, k, eps1, eps2, tau, d, xi):
-    n = data.shape[0] - (tau * d)
+    n = data.shape[0] - (tau * (d - 1))
     bound1 = boundary(k, n) # k dimensional boundary matrix
     bound2 = boundary(k+1, n) # k-1 dimentional boundary matrix
     # Boundary Operators Restricted to Relevant Scales

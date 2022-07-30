@@ -10,7 +10,7 @@ from classicTakens import *
 T = 5 # Number of points
 k = 1 # Dimension for Betti number
 tau = 1 # Delay
-N = 10 # Number of scales
+N = 20 # Number of scales
 eps0 = 0.5 # Smallest scale
 epsStep = 0.1 # Step between scales
 
@@ -64,8 +64,8 @@ fig, ax = plt.subplots(1, 1)
 
 cax = ax.matshow(bettis)
 fig.colorbar(cax)
-ax.set_xticklabels([''] + scales[::2])
-ax.set_yticklabels([''] + scales[::-2])
+ax.set_xticklabels([''] + scales[::4])
+ax.set_yticklabels([''] + scales[::-4])
 ax.xaxis.set_ticks_position('bottom')
 ax.set_title("Persistence Diagram One Period")
 ax.set_xlabel("Birth")

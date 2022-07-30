@@ -5,14 +5,14 @@ from itertools import product
 from classicTakens import *
 
 
-def betti(eps):
-    eps1, eps2 = eps
-    if (eps1 > eps2):
-        return 0.0
-    return persistentBetti(data, k, eps1, eps2)
-
-def persistenceDiagram(data, k, eps0, N, epsStep, tau=None, d=2, save_data=False, output_path='results/', save_figure=False, figure_path='figures/diagram.png'):
+def persistenceDiagram(data, k, eps0, N, epsStep, tau=None, d=2, xi=1, save_data=False, output_path='results/', save_figure=False, figure_path='figures/diagram.png'):
     scales = [eps0 + (x * epsStep) for x in range(N)]
+
+    def betti(eps):
+        eps1, eps2 = eps
+        if (eps1 > eps2):
+            return 0.0
+        return persistentBetti(data, k, eps1, eps2, tau, d, xi)
 
     with concurrent.futures.ProcessPoolExecutor() as executor:
         bettis = executor.map(betti, product(scales, reversed(scales)))
