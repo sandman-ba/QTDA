@@ -58,8 +58,8 @@ print(data)
 #print(q1)
 #print(ub)
 
-print(persistentBetti(data, k, eps1, eps1, tau))
-print(persistentBetti(data, k, eps1, eps2, tau))
+print(persistentBetti(data, k, (eps1, eps1), tau))
+print(persistentBetti(data, k, (eps1, eps2), tau))
 
 
 

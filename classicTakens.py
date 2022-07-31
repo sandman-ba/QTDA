@@ -4,8 +4,11 @@ from numpy import linalg as LA
 from persistentDirac import *
 
 # Persistent Betti Number
-def persistentBetti(data, k, eps1, eps2, tau=None, d=2, xi=1, M_multiplier=2):
-    if tau is None:
+def persistentBetti(data, k, eps, tau=None, d=2, xi=1, M_multiplier=2):
+    eps1, eps2 = eps
+    if eps1 > eps2:
+        return 0.0
+    elif tau is None:
         eigen, _ = LA.eig(diracPointCloud(data, k, eps1, eps2, xi)[1])
     else:
         eigen, _ = LA.eig(diracTimeSeries(data, k, eps1, eps2, tau, d, xi)[1])

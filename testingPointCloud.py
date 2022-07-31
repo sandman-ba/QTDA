@@ -56,6 +56,6 @@ data = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]])
 #print(q1)
 #print(ub)
 
-print(persistentBetti(data, k, eps1, eps1))
-print(persistentBetti(data, k, eps1, eps2))
+print(persistentBetti(data, k, (eps1, eps1)))
+print(persistentBetti(data, k, (eps1, eps2)))
 
