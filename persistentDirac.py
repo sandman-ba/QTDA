@@ -118,7 +118,7 @@ def diracPointCloud(data, k, eps1, eps2, xi):
     return (q1, di)
 
 
-def UB(data, k, eps1, eps2, tau=None, d=2, xi=1):
+def UB(data, k, eps1, eps2, tau=None, d=2, xi=1, M_multiplier=2):
     if tau is None:
         q1, ub = diracPointCloud(data, k, eps1, eps2, xi)
     else:
@@ -128,7 +128,7 @@ def UB(data, k, eps1, eps2, tau=None, d=2, xi=1):
     gap = np.amin(gap)
     l = np.maximum(np.ceil(1/gap), 2)
     m = eigsh(ub, 1, which='LM', return_eigenvectors=False)[0] * l
-    m = np.ceil(np.log2(m)) + 1
+    m = np.ceil(np.log2(m)) + M_multiplier
     M = 2**m
     ub = expm(((2*pi*l/M)*1j)*ub)
     return (l, m, q1, ub)

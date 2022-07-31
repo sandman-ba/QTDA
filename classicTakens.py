@@ -4,7 +4,7 @@ from numpy import linalg as LA
 from persistentDirac import *
 
 # Persistent Betti Number
-def persistentBetti(data, k, eps1, eps2, tau=None, d=2, xi=1):
+def persistentBetti(data, k, eps1, eps2, tau=None, d=2, xi=1, M_multiplier=2):
     if tau is None:
         eigen, _ = LA.eig(diracPointCloud(data, k, eps1, eps2, xi)[1])
     else:
@@ -15,7 +15,7 @@ def persistentBetti(data, k, eps1, eps2, tau=None, d=2, xi=1):
     l = np.maximum(np.ceil(1/gap), 2)
     eigen = l * eigen
     M = np.amax(np.abs(eigen))
-    M = np.ceil(np.log2(M)) + 2
+    M = np.ceil(np.log2(M)) + M_multiplier
     M = 2**M
     p = l*xi
     prob = np.sum(((np.sin(pi*eigen) + (10**(-13)))/(np.sin(pi*(eigen - p)/M) + (10**(-13)/M)))**2)/(M**2)
