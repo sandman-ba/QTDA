@@ -10,7 +10,7 @@ from persistenceDiagram import *
 # One Attractor #
 #################
 T = 5 # Number of points
-k = 1 # Dimension for Betti number
+k = 0 # Dimension for Betti number
 tau = 1 # Delay
 N = 20 # Number of scales
 eps0 = 0.5 # Smallest scale

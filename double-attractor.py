@@ -10,9 +10,9 @@ from persistenceDiagram import *
 ##################
 T = 12
 tau = 2 # Delay
-k = 1 # Dimension for Betti number
+k = 0 # Dimension for Betti number
 N = 20 # Number of scales
-eps0 = 0.2 # Smallest scale
+eps0 = 0.5 # Smallest scale
 epsStep = 0.1 # Step between scales
 scales = [eps0 + (x * epsStep) for x in range(N)]
 def f(x): return np.sin((2.0*pi)*x) + np.sin((4.0*pi)*x) # Time series function

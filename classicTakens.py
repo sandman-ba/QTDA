@@ -4,7 +4,7 @@ from numpy import linalg as LA
 from persistentDirac import *
 
 # Persistent Betti Number
-def persistentBetti(data, k, eps, tau=None, d=2, xi=1, M_multiplier=3):
+def persistentBetti(data, k, eps, tau=None, d=2, xi=1, M_multiplier=5):
     eps1, eps2 = eps
     if eps1 > eps2:
         return 0.0
@@ -15,7 +15,7 @@ def persistentBetti(data, k, eps, tau=None, d=2, xi=1, M_multiplier=3):
     gap = np.abs(eigen - xi)
     gap = gap[gap > 10**(-13)]
     gap = np.amin(gap)
-    l = np.maximum(np.ceil(1/gap), 2)
+    l = np.maximum(np.ceil(1/gap), 3)
     eigen = l * eigen
     M = np.amax(np.abs(eigen))
     M = np.ceil(np.log2(M)) + M_multiplier
