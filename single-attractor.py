@@ -1,4 +1,5 @@
 import numpy as np
+from numpy import pi
 from itertools import product, repeat
 import concurrent.futures
 from classicTakens import persistentBetti
