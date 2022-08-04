@@ -1,7 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.patches import Circle, Polygon
-from matplotlib.collections import PatchCollection
 from numpy import pi
 
 
@@ -27,11 +25,11 @@ cloudy = series[tau:] # Point Cloud y
 ########################
 # Plotting Time series #
 ########################
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize = (12, 4.5))
+fig1, ax1 = plt.subplots(1, 1, figsize = (5, 5))
 time2 = np.linspace(0.0, 2.0, 100)
 ax1.plot(time2, f(time2), '-')
 ax1.plot(time, series, 'o')
-ax1.set_title("Time Series")
+#ax1.set_title("Time Series")
 ax1.set_xlabel("\(t\)")
 ax1.set_ylabel("\(x(t)\)")
 
@@ -39,8 +37,9 @@ ax1.set_ylabel("\(x(t)\)")
 ########################
 # Plotting Point Cloud #
 ########################
+fig2, ax2 = plt.subplots(1, 1, figsize = (5, 5))
 ax2.plot(cloudx, cloudy, 'o')
-ax2.set_title("Point Cloud")
+#ax2.set_title("Point Cloud")
 ax2.set_xlabel("\(x(t)\)")
 ax2.set_ylabel("\(x(t + \tau)\)")
 
@@ -48,6 +47,7 @@ ax2.set_ylabel("\(x(t + \tau)\)")
 ################
 # Saving plots #
 ################
-fig.savefig("figures/double-attractor.png")
+fig1.savefig("figures/time-series-two-period.png")
+fig2.savefig("figures/point-cloud-two-period.png")
 
 

@@ -19,6 +19,7 @@ def f(x): return np.sin((2.0*pi)*x) + np.sin((4.0*pi)*x) # Time series function
 time = np.linspace(0.0, 1.0, num=T, endpoint=True) # Time series times
 data = f(time) # Time series
 
+
 #######################
 # Persistence Diagram #
 #######################
@@ -27,6 +28,7 @@ with concurrent.futures.ProcessPoolExecutor() as executor:
 
 
 persistenceDiagram(bettis, scales, output_path='results/two-period/', figure_path='figures/diagram-two-period.png', save_data=True, save_figure=True)
+
 
 
 
