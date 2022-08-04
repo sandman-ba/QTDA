@@ -21,8 +21,13 @@ data = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0], [10.0, 0.0], [1
 #######################
 # Persistence Diagram #
 #######################
+dirac = diracMaximalPointCloud(data, k)
+
+def betti(eps):
+    return persistentBetti(data, k, eps, dirac)
+
 with concurrent.futures.ProcessPoolExecutor() as executor:
-    bettis = executor.map(persistentBetti, repeat(data), repeat(k), product(scales, reversed(scales)))
+    bettis = executor.map(betti, product(scales, reversed(scales)))
 
 
 persistenceDiagram(bettis, scales, output_path='results/squares/', figure_path='figures/diagram-squares.png', save_data=True, save_figure=True)

@@ -3,17 +3,24 @@ from numpy import pi
 from numpy import linalg as LA
 from persistentDirac import *
 
+
 # Persistent Betti Number
-def persistentBetti(data, k, eps, tau=None, d=2, xi=1, M_multiplier=5):
+def persistentBetti(data, k, eps, dirac=None, tau=None, d=2, xi=1, M_multiplier=5):
     eps1, eps2 = eps
     if eps1 > eps2:
         return 0.0
-    elif tau is None:
-        eigen, _ = LA.eig(diracPointCloud(data, k, eps1, eps2, xi)[1])
+    elif dirac is None:
+        if tau is None:
+            eigen, _ = LA.eig(diracPointCloud(data, k, eps1, eps2, xi)[1])
+        else:
+            eigen, _ = LA.eig(diracTimeSeries(data, k, eps1, eps2, tau, d, xi)[1])
     else:
-        eigen, _ = LA.eig(diracTimeSeries(data, k, eps1, eps2, tau, d, xi)[1])
+        if tau is None:
+            eigen, _ = LA.eig(diracPointCloud(dirac, data, k, eps1, eps2, xi, dirac)[1])
+        else:
+            eigen, _ = LA.eig(diracTimeSeries(dirac, data, k, eps1, eps2, tau, d, xi, dirac)[1])
     gap = np.abs(eigen - xi)
-    gap = gap[gap > 10**(-13)]
+    gap = gap[gap > 10**(-9)]
     gap = np.amin(gap)
     l = np.maximum(np.ceil(1/gap), 3)
     eigen = l * eigen

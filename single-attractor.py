@@ -25,8 +25,13 @@ data = f(time) # Time series
 #######################
 # Persistence Diagram #
 #######################
+dirac = diracMaximalTimeSeries(data, k)
+
+def betti(eps):
+    return persistentBetti(data, k, eps, dirac, tau)
+
 with concurrent.futures.ProcessPoolExecutor() as executor:
-    bettis = executor.map(persistentBetti, repeat(data), repeat(k), product(scales, reversed(scales)), repeat(tau))
+    bettis = executor.map(betti, product(scales, reversed(scales)))
 
 
 persistenceDiagram(bettis, scales, output_path='results/one-period/', figure_path='figures/diagram-one-period.png', save_data=True, save_figure=True)

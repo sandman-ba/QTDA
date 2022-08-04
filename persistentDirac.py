@@ -41,29 +41,32 @@ def boundary(k, n):
 
 
 # Projection Operator for Time Series
-def projectionTimeSeries(data, k, n, eps, tau, d):
-    proj = [membershipOracleTakens(simplex, data, eps, tau, d) for simplex in kcomplex(k, n)]
+def projectionTimeSeries(data, k, n, eps1, tau, d=2, eps2=0):
+    if eps2 < eps1:
+        proj = [membershipOracleTakens(simplex, data, eps1, tau, d) for simplex in kcomplex(k, n)]
+    else:
+        proj = [membershipOracleTakens(simplex, data, eps1, tau, d) for simplex in kcomplex(k-1, n)]
+        proj = proj + [membershipOracleTakens(simplex, data, eps1, tau, d) for simplex in kcomplex(k, n)]
+        proj = proj + [membershipOracleTakens(simplex, data, eps2, tau, d) for simplex in kcomplex(k+1, n)]
     return np.array(proj)
 
 
 # Projection Operator for Point Clouds
-def projectionPointCloud(data, k, n, eps):
-    proj = [membershipOracle(simplex, data, eps) for simplex in kcomplex(k, n)]
+def projectionPointCloud(data, k, n, eps1, eps2=0):
+    if eps2 < eps1:
+        proj = [membershipOracle(simplex, data, eps1) for simplex in kcomplex(k, n)]
+    else:
+        proj = [membershipOracle(simplex, data, eps1) for simplex in kcomplex(k-1, n)]
+        proj = proj + [membershipOracle(simplex, data, eps1) for simplex in kcomplex(k, n)]
+        proj = proj + [membershipOracle(simplex, data, eps2) for simplex in kcomplex(k+1, n)]
     return np.array(proj)
 
 
-# Persistent Dirac Operator for Time Series
-def diracTimeSeries(data, k, eps1, eps2, tau, d, xi):
+# Maximal Dirac Operator
+def diracMaximalTimeSeries(data, k):
     n = data.shape[0] - (tau * (d - 1))
     bound1 = boundary(k, n) # k dimensional boundary matrix
     bound2 = boundary(k+1, n) # k-1 dimentional boundary matrix
-    # Boundary Operators Restricted to Relevant Scales
-    proj2 = (projectionTimeSeries(data, k, n, eps1, tau, d) > 0)
-    bound1 = bound1[projectionTimeSeries(data, k-1, n, eps1, tau, d) > 0, :]
-    bound1 = bound1[:, proj2]
-    bound2 = bound2[proj2, :]
-    proj2 = 0
-    bound2 = bound2[:, projectionTimeSeries(data, k+1, n, eps2, tau, d) > 0]
     # Building Dirac Operator
     rows1, cols1 = bound1.shape
     rows2, cols2 = bound2.shape
@@ -72,8 +75,50 @@ def diracTimeSeries(data, k, eps1, eps2, tau, d, xi):
         [ bound1.transpose() , xi * np.eye( rows2 ) , bound2 ],
         [np.zeros( (cols2, rows1) ) , bound2.transpose() , (-xi) * np.eye( cols2 ) ],
         ])
-    bound1 = 0
-    bound2 = 0
+    return di
+
+def diracMaximalPointCloud(data, k):
+    n = data.shape[0]
+    bound1 = boundary(k, n) # k dimensional boundary matrix
+    bound2 = boundary(k+1, n) # k-1 dimentional boundary matrix
+    # Building Dirac Operator
+    rows1, cols1 = bound1.shape
+    rows2, cols2 = bound2.shape
+    di = np.block([
+        [ (-xi) * np.eye( rows1 ) , bound1 , np.zeros( (rows1, cols2) ) ],
+        [ bound1.transpose() , xi * np.eye( rows2 ) , bound2 ],
+        [np.zeros( (cols2, rows1) ) , bound2.transpose() , (-xi) * np.eye( cols2 ) ],
+        ])
+    return di
+
+
+# Persistent Dirac Operator for Time Series
+def diracTimeSeries(data, k, eps1, eps2, tau, d=2, xi=1, dirac=None):
+    n = data.shape[0] - (tau * (d - 1))
+    if dirac is None:
+        bound1 = boundary(k, n) # k dimensional boundary matrix
+        bound2 = boundary(k+1, n) # k-1 dimentional boundary matrix
+        # Boundary Operators Restricted to Relevant Scales
+        proj2 = (projectionTimeSeries(data, k, n, eps1, tau, d) > 0)
+        bound1 = bound1[projectionTimeSeries(data, k-1, n, eps1, tau, d) > 0, :]
+        bound1 = bound1[:, proj2]
+        bound2 = bound2[proj2, :]
+        proj2 = 0
+        bound2 = bound2[:, projectionTimeSeries(data, k+1, n, eps2, tau, d) > 0]
+        # Building Dirac Operator
+        rows1, cols1 = bound1.shape
+        rows2, cols2 = bound2.shape
+        di = np.block([
+            [ (-xi) * np.eye( rows1 ) , bound1 , np.zeros( (rows1, cols2) ) ],
+            [ bound1.transpose() , xi * np.eye( rows2 ) , bound2 ],
+            [np.zeros( (cols2, rows1) ) , bound2.transpose() , (-xi) * np.eye( cols2 ) ],
+            ])
+        bound1 = 0
+        bound2 = 0
+    else:
+        proj = (projectionTimeSeries(data, k, n, eps1, tau, d, eps2) > 0)
+        di = dirac[proj, :]
+        di = di[:, proj]
     # Removing 0 rows and columns to save memory
     di = di[~np.all(di == 0, axis=1)]
     di = di[:, ~np.all(di == 0, axis=0)]
@@ -86,28 +131,33 @@ def diracTimeSeries(data, k, eps1, eps2, tau, d, xi):
 
 
 # Persistent Dirac Operator for Point Clouds
-def diracPointCloud(data, k, eps1, eps2, xi):
+def diracPointCloud(data, k, eps1, eps2, xi=1):
     n, _ = data.shape
-    bound1 = boundary(k, n) # k dimensional boundary matrix
-    bound2 = boundary(k+1, n) # k-1 dimentional boundary matrix
-    # Boundary Operators Restricted to Relevant Scales
-    proj2 = (projectionPointCloud(data, k, n, eps1) > 0)
-    bound1 = bound1[projectionPointCloud(data, k-1, n, eps1) > 0, :]
-    bound1 = bound1[:, proj2]
-    bound2 = bound2[proj2, :]
-    proj2 = 0
-    bound2 = bound2[:, projectionPointCloud(data, k+1, n, eps2) > 0]
-    # Building Dirac Operator
-    rows1, cols1 = bound1.shape
-    rows2, cols2 = bound2.shape
-    di = np.block([
-        [ (-xi) * np.eye( rows1 ) , bound1 , np.zeros( (rows1, cols2) ) ],
-        [ bound1.transpose() , xi * np.eye( rows2 ) , bound2 ],
-        [np.zeros( (cols2, rows1) ) , bound2.transpose() , (-xi) * np.eye( cols2 ) ],
-        ])
-    bound1 = 0
-    bound2 = 0
-    # Removing 0 rows and columns to save memory
+    if dirac is None:
+        bound1 = boundary(k, n) # k dimensional boundary matrix
+        bound2 = boundary(k+1, n) # k-1 dimentional boundary matrix
+        # Boundary Operators Restricted to Relevant Scales
+        proj2 = (projectionPointCloud(data, k, n, eps1) > 0)
+        bound1 = bound1[projectionPointCloud(data, k-1, n, eps1) > 0, :]
+        bound1 = bound1[:, proj2]
+        bound2 = bound2[proj2, :]
+        proj2 = 0
+        bound2 = bound2[:, projectionPointCloud(data, k+1, n, eps2) > 0]
+        # Building Dirac Operator
+        rows1, cols1 = bound1.shape
+        rows2, cols2 = bound2.shape
+        di = np.block([
+            [ (-xi) * np.eye( rows1 ) , bound1 , np.zeros( (rows1, cols2) ) ],
+            [ bound1.transpose() , xi * np.eye( rows2 ) , bound2 ],
+            [np.zeros( (cols2, rows1) ) , bound2.transpose() , (-xi) * np.eye( cols2 ) ],
+            ])
+        bound1 = 0
+        bound2 = 0
+    else:
+        proj = (projectionPointCloud(data, k, n, eps1, eps2) > 0)
+        di = dirac[proj, :]
+        di = di[:, proj]
+     # Removing 0 rows and columns to save memory
     di = di[~np.all(di == 0, axis=1)]
     di = di[:, ~np.all(di == 0, axis=0)]
     dim, _ = di.shape
