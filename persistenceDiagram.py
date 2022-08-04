@@ -25,7 +25,7 @@ def persistenceDiagram(bettis, scales, save_data=False, output_path='results/', 
 
     cax = ax.matshow(bettis)
     fig.colorbar(cax)
-    ax.set_xticklabels([''] + scales)
+    ax.set_xticklabels([''] + scales[::1])
     ax.set_yticklabels([''] + scales[::-1])
     ax.xaxis.set_ticks_position('bottom')
     ax.set_xlabel("Birth")

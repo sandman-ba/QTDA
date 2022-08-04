@@ -16,9 +16,9 @@ def persistentBetti(data, k, eps, dirac=None, tau=None, d=2, xi=1, M_multiplier=
             eigen, _ = LA.eig(diracTimeSeries(data, k, eps1, eps2, tau, d, xi)[1])
     else:
         if tau is None:
-            eigen, _ = LA.eig(diracPointCloud(dirac, data, k, eps1, eps2, xi, dirac)[1])
+            eigen, _ = LA.eig(diracPointCloud(data, k, eps1, eps2, xi, dirac)[1])
         else:
-            eigen, _ = LA.eig(diracTimeSeries(dirac, data, k, eps1, eps2, tau, d, xi, dirac)[1])
+            eigen, _ = LA.eig(diracTimeSeries(data, k, eps1, eps2, tau, d, xi, dirac)[1])
     gap = np.abs(eigen - xi)
     gap = gap[gap > 10**(-9)]
     gap = np.amin(gap)
@@ -28,6 +28,24 @@ def persistentBetti(data, k, eps, dirac=None, tau=None, d=2, xi=1, M_multiplier=
     M = np.ceil(np.log2(M)) + M_multiplier
     M = 2**M
     p = l*xi
-    prob = np.sum(((np.sin(pi*eigen) + (10**(-13)))/(np.sin(pi*(eigen - p)/M) + (10**(-13)/M)))**2)/(M**2)
+    prob = np.sum(((np.sin(pi*eigen + (10**(-13))))/(np.sin(pi*(eigen - p)/M + (10**(-13)/M))))**2)/(M**2)
     return prob
+
+# Persistent Betti Number
+def persistentBettiClassic(data, k, eps, dirac=None, tau=None, d=2, xi=1):
+    eps1, eps2 = eps
+    if eps1 > eps2:
+        return 0.0
+    elif dirac is None:
+        if tau is None:
+            eigen, _ = LA.eig(diracPointCloud(data, k, eps1, eps2, xi)[1])
+        else:
+            eigen, _ = LA.eig(diracTimeSeries(data, k, eps1, eps2, tau, d, xi)[1])
+    else:
+        if tau is None:
+            eigen, _ = LA.eig(diracPointCloud(data, k, eps1, eps2, xi, dirac)[1])
+        else:
+            eigen, _ = LA.eig(diracTimeSeries(data, k, eps1, eps2, tau, d, xi, dirac)[1])
+    gap = np.abs(eigen - xi)
+    return sum(gap < 10**(-9))
 

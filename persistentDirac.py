@@ -63,7 +63,7 @@ def projectionPointCloud(data, k, n, eps1, eps2=0):
 
 
 # Maximal Dirac Operator
-def diracMaximalTimeSeries(data, k):
+def diracMaximalTimeSeries(data, k, tau, d=2, xi=1):
     n = data.shape[0] - (tau * (d - 1))
     bound1 = boundary(k, n) # k dimensional boundary matrix
     bound2 = boundary(k+1, n) # k-1 dimentional boundary matrix
@@ -77,7 +77,7 @@ def diracMaximalTimeSeries(data, k):
         ])
     return di
 
-def diracMaximalPointCloud(data, k):
+def diracMaximalPointCloud(data, k, xi=1):
     n = data.shape[0]
     bound1 = boundary(k, n) # k dimensional boundary matrix
     bound2 = boundary(k+1, n) # k-1 dimentional boundary matrix
@@ -131,7 +131,7 @@ def diracTimeSeries(data, k, eps1, eps2, tau, d=2, xi=1, dirac=None):
 
 
 # Persistent Dirac Operator for Point Clouds
-def diracPointCloud(data, k, eps1, eps2, xi=1):
+def diracPointCloud(data, k, eps1, eps2, xi=1, dirac=None):
     n, _ = data.shape
     if dirac is None:
         bound1 = boundary(k, n) # k dimensional boundary matrix
