@@ -30,22 +30,24 @@ cloudy = data.Channel2[tau:] # Point Cloud y
 ########################
 # Plotting Time series #
 ########################
-fig1, ax1 = plt.subplots(1, 1, figsize = (5, 5))
+fig1, ax1 = plt.subplots(1, 1, figsize = (6.5, 5))
 ax1.plot(data.time[100:200], data.Channel2[100:200], '-')
 #ax1.set_title("Time Series")
-ax1.set_xlabel("\(t\)")
-ax1.set_ylabel("\(x(t)\)")
+ax1.set_xlabel(r"\(t\)")
+ax1.set_ylabel(r"\(x(t)\)")
 
 
 ########################
 # Plotting Point Cloud #
 ########################
-fig2, ax2 = plt.subplots(1, 1, figsize = (5, 5))
+fig2, ax2 = plt.subplots(1, 1, figsize = (6.5, 5))
 ax2.plot(cloudx[100:200], cloudy[100:200], 'o')
 #ax2.set_title("Point Cloud")
-ax2.set_xlabel("\(x(t)\)")
-ax2.set_ylabel("\(x(t + \tau)\)")
+ax2.set_xlabel(r"\(x(t)\)")
+ax2.set_ylabel(r"\(x(t + \tau)\)")
 
+fig1.set_tight_layout(True)
+fig2.set_tight_layout(True)
 
 ################
 # Saving plots #

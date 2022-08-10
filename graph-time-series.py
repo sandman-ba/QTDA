@@ -29,28 +29,30 @@ cloudy = series[tau:] # Point Cloud y
 ########################
 # Plotting Time series #
 ########################
-fig1, ax1 = plt.subplots(1, 1, figsize = (5, 5))
+fig1, ax1 = plt.subplots(1, 1, figsize = (6.5, 5))
 time2 = np.linspace(0.0, 2.0, 100)
 ax1.plot(time2, f(time2), '-')
 ax1.plot(time, series, 'o')
 #plt.ylim(-1.2,1.2)
 #plt.xlim(-0.2, 1.2)
 #ax1.set_title("Time Series")
-ax1.set_xlabel("\(t\)")
-ax1.set_ylabel("\(x(t)\)")
+ax1.set_xlabel(r"\(t\)")
+ax1.set_ylabel(r"\(x(t)\)")
 
 
 ########################
 # Plotting Point Cloud #
 ########################
-fig2, ax2 = plt.subplots(1, 1, figsize = (5, 5))
+fig2, ax2 = plt.subplots(1, 1, figsize = (6.5, 5))
 ax2.plot(cloudx, cloudy, 'o')
 #plt.ylim(-1.2, 1.2)
 #plt.xlim(-1.2, 1.2)
 #ax2.set_title("Point Cloud")
-ax2.set_xlabel("\(x(t)\)")
-ax2.set_ylabel("\(x(t + \tau)\)")
+ax2.set_xlabel(r"\(x(t)\)")
+ax2.set_ylabel(r"\(x(t + \tau)\)")
 
+fig1.set_tight_layout(True)
+fig2.set_tight_layout(True)
 
 ################
 # Saving plots #
@@ -62,7 +64,7 @@ fig2.savefig("figures/point-cloud-one-period.png")
 ######################
 # Plotting simplices #
 ######################
-fig3, (ax3, ax4) = plt.subplots(1, 2, figsize = (11, 5))
+fig3, (ax3, ax4) = plt.subplots(1, 2, figsize = (10, 5))
 
 
 circles1 = []
@@ -86,9 +88,9 @@ ax3.add_patch(lines1)
 ax3.plot(cloudx, cloudy, 'or')
 ax3.set_xlim(-2.0, 2.0)
 ax3.set_ylim(-2.0, 2.0)
-ax3.set_title(f"Scale \(\epsilon = {e1}\)")
-ax3.set_xlabel("\(x(t)\)")
-ax3.set_ylabel("\(x(t + \tau)\)")
+ax3.set_title(fr"Scale \(\epsilon_1 = {e1}\)")
+ax3.set_xlabel(r"\(x(t)\)")
+ax3.set_ylabel(r"\(x(t + \tau)\)")
 
 
 
@@ -99,10 +101,12 @@ ax4.add_patch(lines2)
 ax4.plot(cloudx, cloudy, 'or')
 ax4.set_xlim(-2.0, 2.0)
 ax4.set_ylim(-2.0, 2.0)
-ax4.set_title(f"Scale \(\epsilon = {e2}\)")
-ax4.set_xlabel("\(x(t)\)")
-ax4.set_ylabel("\(x(t + \tau)\)")
+ax4.set_yticks([])
+ax4.set_title(fr"Scale \(\epsilon_2 = {e2}\)")
+ax4.set_xlabel(r"\(x(t)\)")
+#ax4.set_ylabel(r"\(x(t + \tau)\)")
 
+fig3.set_tight_layout(True)
 
 ################
 # Saving plots #
