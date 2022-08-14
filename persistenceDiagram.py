@@ -21,14 +21,20 @@ def persistenceDiagram(bettis, scales, save_data=False, output_path='results/', 
         for j in range(N - i - 1, 0, -1):
             bettis[i, j] = bettis[i, j] - bettis[i, j - 1]
 
-    fig, ax = plt.subplots(1, 1, figsize = (6.5, 5))
+    fig, ax = plt.subplots(1, 1, figsize = (6, 5))
 
     cax = ax.matshow(bettis, cmap = 'Greys')
     cbar = fig.colorbar(cax)
-    ax.set_xticks([(N//10)*x for x in range(10)])
-    ax.set_yticks([(N//10)*x + 1 for x in range(10)])
-    ax.set_xticklabels(map(round, scales[::N//10], repeat(1)))
-    ax.set_yticklabels(map(round, scales[-2::-N//10], repeat(1)))
+    if scales[-1] > 9.5:
+        ax.set_xticks([(N//8 + 1)*x for x in range(8)])
+        ax.set_yticks([(N//8 + 1)*x + 1 for x in range(8)])
+        ax.set_xticklabels(map(round, scales[::N//8 + 1], repeat(1)))
+        ax.set_yticklabels(map(round, scales[-2::-N//8], repeat(1)))
+    else:
+        ax.set_xticks([(N//10)*x for x in range(10)])
+        ax.set_yticks([(N//10)*x + 1 for x in range(10)])
+        ax.set_xticklabels(map(round, scales[::N//10], repeat(1)))
+        ax.set_yticklabels(map(round, scales[-2::-N//10], repeat(1)))
     ax.xaxis.set_ticks_position('bottom')
     ax.set_xlabel("Birth")
     ax.set_ylabel("Death")
