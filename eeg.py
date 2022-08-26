@@ -38,23 +38,23 @@ bettisClassic = []
 for k in ks:
     dirac = diracMaximalTimeSeries(data, k, tau)
 
-    def bettiClassic(eps):
-        return persistentBettiClassic(data, k, eps, dirac, tau)
+#    def bettiClassic(eps):
+#        return persistentBettiClassic(data, k, eps, dirac, tau)
 
     def betti(eps):
         return persistentBetti(data, k, eps, dirac, tau)
 
-    with concurrent.futures.ProcessPoolExecutor() as executor:
-        bettikClassic = executor.map(bettiClassic, product(scales, reversed(scales)))
+#    with concurrent.futures.ProcessPoolExecutor() as executor:
+#        bettikClassic = executor.map(bettiClassic, product(scales, reversed(scales)))
 
-    bettisClassic.append(np.fromiter(bettikClassic, np.double))
+#    bettisClassic.append(np.fromiter(bettikClassic, np.half))
 
     with concurrent.futures.ProcessPoolExecutor() as executor:
         bettik = executor.map(betti, product(scales, reversed(scales)))
 
-    bettis.append(np.fromiter(bettik, np.double))
+    bettis.append(np.fromiter(bettik, np.half))
 
 
-persistenceDiagram(bettisClassic, scales, figure_path='figures/diagram-eeg-classic.png')
+#persistenceDiagram(bettisClassic, scales, figure_path='figures/diagram-eeg-classic.png')
 
 persistenceDiagram(bettis, scales, figure_path='figures/diagram-eeg.png')

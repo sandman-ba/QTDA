@@ -29,7 +29,7 @@ def persistentBetti(data, k, eps, dirac=None, tau=None, d=2, xi=1, M_multiplier=
     M = 2**M
     p = l*xi
     prob = np.sum(((np.sin(pi*eigen + (10**(-13))))/(np.sin(pi*(eigen - p)/M + (10**(-13)/M))))**2)/(M**2)
-    return prob
+    return prob.real.astype(np.half)
 
 # Persistent Betti Number
 def persistentBettiClassic(data, k, eps, dirac=None, tau=None, d=2, xi=1):

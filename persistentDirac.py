@@ -30,14 +30,14 @@ def boundaryOracle(face, simplex):
 # Boundary Matrix
 def boundary(k, n):
     if k == 0:
-        return np.ones((1,n), dtype=int)
+        return np.ones((1,n), dtype=np.byte)
     bound = []
     for face in kcomplex(k-1, n):
         row = []
         for simplex in kcomplex(k, n):
             row.append(boundaryOracle(face, simplex))
         bound.append(row)
-    return np.array(bound)
+    return np.array(bound, dtype=np.byte)
 
 
 # Projection Operator for Time Series
@@ -71,11 +71,11 @@ def diracMaximalTimeSeries(data, k, tau, d=2, xi=1):
     rows1, cols1 = bound1.shape
     rows2, cols2 = bound2.shape
     di = np.block([
-        [ (-xi) * np.eye( rows1 ) , bound1 , np.zeros( (rows1, cols2) ) ],
-        [ bound1.transpose() , xi * np.eye( rows2 ) , bound2 ],
-        [np.zeros( (cols2, rows1) ) , bound2.transpose() , (-xi) * np.eye( cols2 ) ],
+        [ (-xi) * np.eye( rows1 , dtype=np.byte) , bound1 , np.zeros( (rows1, cols2) , dtype=np.byte) ],
+        [ bound1.transpose() , xi * np.eye( rows2 , dtype=np.byte) , bound2 ],
+        [np.zeros( (cols2, rows1) , dtype=np.byte) , bound2.transpose() , (-xi) * np.eye( cols2 , dtype=np.byte) ],
         ])
-    return di
+    return di.astype(np.byte)
 
 def diracMaximalPointCloud(data, k, xi=1):
     n = data.shape[0]
@@ -89,7 +89,7 @@ def diracMaximalPointCloud(data, k, xi=1):
         [ bound1.transpose() , xi * np.eye( rows2 ) , bound2 ],
         [np.zeros( (cols2, rows1) ) , bound2.transpose() , (-xi) * np.eye( cols2 ) ],
         ])
-    return di
+    return di.astype(np.byte)
 
 
 # Persistent Dirac Operator for Time Series
@@ -109,9 +109,9 @@ def diracTimeSeries(data, k, eps1, eps2, tau, d=2, xi=1, dirac=None):
         rows1, cols1 = bound1.shape
         rows2, cols2 = bound2.shape
         di = np.block([
-            [ (-xi) * np.eye( rows1 ) , bound1 , np.zeros( (rows1, cols2) ) ],
-            [ bound1.transpose() , xi * np.eye( rows2 ) , bound2 ],
-            [np.zeros( (cols2, rows1) ) , bound2.transpose() , (-xi) * np.eye( cols2 ) ],
+            [ (-xi) * np.eye( rows1 , dtype=np.byte) , bound1 , np.zeros( (rows1, cols2) , dtype=np.byte) ],
+            [ bound1.transpose() , xi * np.eye( rows2 , dtype=np.byte) , bound2 ],
+            [np.zeros( (cols2, rows1) , dtype=np.byte) , bound2.transpose() , (-xi) * np.eye( cols2 , dtype=np.byte) ],
             ])
         bound1 = 0
         bound2 = 0
@@ -124,10 +124,10 @@ def diracTimeSeries(data, k, eps1, eps2, tau, d=2, xi=1, dirac=None):
     di = di[:, ~np.all(di == 0, axis=0)]
     dim, _ = di.shape
     q1 = np.ceil(np.log2(dim)) # Number of qubits for registers 1 and 2
-    q1 = q1.astype(np.int64)
+    q1 = q1.astype(int)
     if (q1 - np.log2(dim) > 0): # Filling up with 0's if necessary
-        di = np.block([[di, np.zeros((dim, 2**q1 - dim))], [np.zeros((2**q1 - dim, dim)), np.zeros((2**q1 - dim, 2**q1 - dim))]])
-    return (q1, di)
+        di = np.block([[di, np.zeros((dim, 2**q1 - dim), dtype=np.byte)], [np.zeros((2**q1 - dim, dim), dtype=np.byte), np.zeros((2**q1 - dim, 2**q1 - dim), dtype=np.byte)]])
+    return (q1, di.astype(np.byte))
 
 
 # Persistent Dirac Operator for Point Clouds
@@ -147,9 +147,9 @@ def diracPointCloud(data, k, eps1, eps2, xi=1, dirac=None):
         rows1, cols1 = bound1.shape
         rows2, cols2 = bound2.shape
         di = np.block([
-            [ (-xi) * np.eye( rows1 ) , bound1 , np.zeros( (rows1, cols2) ) ],
-            [ bound1.transpose() , xi * np.eye( rows2 ) , bound2 ],
-            [np.zeros( (cols2, rows1) ) , bound2.transpose() , (-xi) * np.eye( cols2 ) ],
+            [ (-xi) * np.eye( rows1 , dtype=np.byte) , bound1 , np.zeros( (rows1, cols2) , dtype=np.byte) ],
+            [ bound1.transpose() , xi * np.eye( rows2 , dtype=np.byte) , bound2 ],
+            [np.zeros( (cols2, rows1) , dtype=np.byte) , bound2.transpose() , (-xi) * np.eye( cols2 , dtype=np.byte) ],
             ])
         bound1 = 0
         bound2 = 0
@@ -162,10 +162,10 @@ def diracPointCloud(data, k, eps1, eps2, xi=1, dirac=None):
     di = di[:, ~np.all(di == 0, axis=0)]
     dim, _ = di.shape
     q1 = np.ceil(np.log2(dim)) # Number of qubits for registers 1 and 2
-    q1 = q1.astype(np.int64)
+    q1 = q1.astype(int)
     if (q1 - np.log2(dim) > 0): # Filling up with 0's if necessary
-        di = np.block([[di, np.zeros((dim, 2**q1 - dim))], [np.zeros((2**q1 - dim, dim)), np.zeros((2**q1 - dim, 2**q1 - dim))]])
-    return (q1, di)
+        di = np.block([[di, np.zeros((dim, 2**q1 - dim), dtype=np.byte)], [np.zeros((2**q1 - dim, dim), dtype=np.byte), np.zeros((2**q1 - dim, 2**q1 - dim), dtype=np.byte)]])
+    return (q1, di.astype(np.byte))
 
 
 def UB(data, k, eps1, eps2, tau=None, d=2, xi=1, M_multiplier=2):

@@ -19,9 +19,9 @@ print(data)
 #print(distanceOracle(data, 2, 3, eps1))
 #print(membershipOracle((0, 0, 1, 1), data, eps1))
 
-for simplex in kcomplex(k, n):
-    print(simplex)
-    print(membershipOracle(simplex, data, eps1))
+#for simplex in kcomplex(k, n):
+#    print(simplex)
+#    print(membershipOracle(simplex, data, eps1))
 #    for face in kcomplex(k-1,n):
 #        print(face)
 #        print(boundaryOracle(face, simplex))
@@ -48,7 +48,7 @@ for simplex in kcomplex(k, n):
 #print(bound2)
 
 
-#print(diracPointCloud(data, k, eps1, eps2, 1)[1])
+print(diracPointCloud(data, k, eps1, eps2, 1)[1])
 
 #l, m, q1, ub = UB(data, k, eps1, eps2)
 #print(l)
