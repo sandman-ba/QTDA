@@ -8,20 +8,21 @@ def persistenceDiagram(bettis, scales, figure_path=None):
 
     N = len(list(scales))
     patches = []
+    colors = ['orange', 'blue']
 
     fig, ax = plt.subplots(1, 1, figsize = (5, 5))
 
-    ax.plot([scales[0] - 0.5, scales[-1]], [scales[0] - 0.5, scales[-1]], 'r')
+    ax.plot([scales[0] - 0.5, scales[-1] + 0.5], [scales[0] - 0.5, scales[-1] + 0.5], 'k')
 
-    ax.set_xlim([scales[0] - 0.5, scales[-1]])
-    ax.set_ylim([scales[0] - 0.5, scales[-1]])
+    ax.set_xlim([scales[0] - 0.5, scales[-1] + 0.5])
+    ax.set_ylim([scales[0] - 0.5, scales[-1] + 0.5])
     ax.set_xlabel("Birth")
     ax.set_ylabel("Death")
     fig.set_tight_layout(True)
 
     r = (scales[-1] - scales[0]) / 70
 
-    for bettik in bettis:
+    for k, bettik in enumerate(bettis):
 
         bettik = bettik.reshape((N,N))
         bettik = bettik.T
@@ -43,7 +44,7 @@ def persistenceDiagram(bettis, scales, figure_path=None):
                     circle = Circle( (scales[x], scales[N - y -1]) , round(betti) * r)
                     circles.append(circle)
 
-        patches.append(PatchCollection(circles))
+        patches.append(PatchCollection(circles, facecolors = colors[k]))
 
     for patch in patches:
         ax.add_collection(patch)
