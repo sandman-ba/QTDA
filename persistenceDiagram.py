@@ -26,7 +26,7 @@ def persistenceDiagram(bettis, scales, save_data=False, output_path='results/', 
     fig, ax = plt.subplots(1, 1, figsize = (5, 5))
 
     circles = []
-    r = 1 / ( 20 * (scales[-1] - scales[0]) )
+    r = (scales[-1] - scales[0]) / 70
 
     for x in range(N):
         for y in range(N - x):
@@ -37,11 +37,11 @@ def persistenceDiagram(bettis, scales, save_data=False, output_path='results/', 
 
     patch = PatchCollection(circles)
 
+    ax.plot([scales[0] - 0.5, scales[-1]], [scales[0] - 0.5, scales[-1]], 'r')
     ax.add_collection(patch)
-    ax.plot([scales[0], scales[-1]], [scales[0], scales[-1]], 'r')
 
-    ax.set_xlim([scales[0], scales[-1]])
-    ax.set_ylim([scales[0], scales[-1]])
+    ax.set_xlim([scales[0] - 0.5, scales[-1]])
+    ax.set_ylim([scales[0] - 0.5, scales[-1]])
     ax.set_xlabel("Birth")
     ax.set_ylabel("Death")
 
