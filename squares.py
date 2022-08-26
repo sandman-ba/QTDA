@@ -10,8 +10,8 @@ from persistentDirac import diracMaximalPointCloud
 # Two Squares #
 ###############
 ks = [0, 1] # Dimension for Betti number
-N = 20 # Number of scales
-eps0 = 0.5 # Smallest scale
+N = 25 # Number of scales
+eps0 = 0 # Smallest scale
 epsStep = 0.1 # Step between scales
 s = np.sqrt(2)
 scales = [eps0 + (x * epsStep) for x in range(N)]

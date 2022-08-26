@@ -9,18 +9,23 @@ def persistenceDiagram(bettis, scales, figure_path=None):
     N = len(list(scales))
     patches = []
     colors = ['orange', 'blue']
+    s0 = scales[0]
+    s1 = scales[-1]
+    sd = s1 / 10
 
     fig, ax = plt.subplots(1, 1, figsize = (5, 5))
 
-    ax.plot([scales[0] - 0.5, scales[-1] + 0.5], [scales[0] - 0.5, scales[-1] + 0.5], 'k')
+    ax.plot([s0 - sd, s1 + sd], [s0 - sd, s1 + sd], 'k')
 
-    ax.set_xlim([scales[0] - 0.5, scales[-1] + 0.5])
-    ax.set_ylim([scales[0] - 0.5, scales[-1] + 0.5])
+    ax.set_xlim([s0 - sd, s1 + sd])
+    ax.set_ylim([s0 - sd, s1 + sd])
+    ax.set_xticks(scales[::N // 6])
+    ax.set_yticks(scales[::N // 6])
     ax.set_xlabel("Birth")
     ax.set_ylabel("Death")
     fig.set_tight_layout(True)
 
-    r = (scales[-1] - scales[0]) / 70
+    r = (s1 - s0) / 70
 
     for k, bettik in enumerate(bettis):
 

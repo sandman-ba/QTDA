@@ -11,10 +11,10 @@ from persistentDirac import diracMaximalTimeSeries
 # Set Parameters #
 ##################
 tau = 2 # Delay
-k = 1 # Dimension for Betti number
-N = 30 # Number of scales
-eps0 = 5 # Smallest scale
-epsStep = 0.5 # Step between scales
+ks = [0, 1] # Dimension for Betti number
+N = 80 # Number of scales
+eps0 = 0 # Smallest scale
+epsStep = 0.25 # Step between scales
 scales = [eps0 + (x * epsStep) for x in range(N)]
 
 
@@ -33,24 +33,28 @@ data = np.array(data.Channel2)
 #######################
 # Persistence Diagram #
 #######################
-dirac = diracMaximalTimeSeries(data, k, tau)
+bettis = []
+bettisClassic = []
+for k in ks:
+    dirac = diracMaximalTimeSeries(data, k, tau)
 
-def bettiClassic(eps):
-    return persistentBettiClassic(data, k, eps, dirac, tau)
+    def bettiClassic(eps):
+        return persistentBettiClassic(data, k, eps, dirac, tau)
 
-def betti(eps):
-    return persistentBetti(data, k, eps, dirac, tau)
+    def betti(eps):
+        return persistentBetti(data, k, eps, dirac, tau)
 
-with concurrent.futures.ProcessPoolExecutor() as executor:
-    bettisClassic = executor.map(bettiClassic, product(scales, reversed(scales)))
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        bettikClassic = executor.map(bettiClassic, product(scales, reversed(scales)))
 
-with concurrent.futures.ProcessPoolExecutor() as executor:
-    bettis = executor.map(betti, product(scales, reversed(scales)))
+    bettisClassic.append(np.fromiter(bettikClassic, np.double))
 
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        bettik = executor.map(betti, product(scales, reversed(scales)))
 
-persistenceDiagram(bettisClassic, scales, figure_path='figures/diagram-eeg-classic.png', save_figure=True)
-
-persistenceDiagram(bettis, scales, output_path='results/eeg/', figure_path='figures/diagram-eeg.png', save_data=True, save_figure=True)
-
+    bettis.append(np.fromiter(bettik, np.double))
 
 
+persistenceDiagram(bettisClassic, scales, figure_path='figures/diagram-eeg-classic.png')
+
+persistenceDiagram(bettis, scales, figure_path='figures/diagram-eeg.png')
