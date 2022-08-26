@@ -29,6 +29,8 @@ def boundaryOracle(face, simplex):
 
 # Boundary Matrix
 def boundary(k, n):
+    if k == 0:
+        return np.ones((1,n), dtype=int)
     bound = []
     for face in kcomplex(k-1, n):
         row = []

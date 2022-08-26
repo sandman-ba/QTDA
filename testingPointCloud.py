@@ -2,6 +2,7 @@ import numpy as np
 from persistentDirac import *
 from membershipVR import *
 from classicTakens import *
+from itertools import combinations
 
 k = 1 # Dimension for Betti number
 n = 4
@@ -13,15 +14,14 @@ data = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]])
 #data = np.array([[0.0, 1.0, 1.0, 0.0, 10.0, 10.0 + s, 10.0 + s, 10.0],[0.0, 0.0, 1.0, 1.0, 0.0, 0.0, s, s]])
 #data = np.array([[0.0, 1.0, 1.0, 0.0], [0.0, 0.0, 1.0, 1.0]])
 
-
-#print(data)
+print(data)
 
 #print(distanceOracle(data, 2, 3, eps1))
 #print(membershipOracle((0, 0, 1, 1), data, eps1))
 
-#for simplex in kcomplex(k, n):
-#    print(simplex)
-#    print(membershipOracle(simplex, data, eps1))
+for simplex in kcomplex(k, n):
+    print(simplex)
+    print(membershipOracle(simplex, data, eps1))
 #    for face in kcomplex(k-1,n):
 #        print(face)
 #        print(boundaryOracle(face, simplex))
@@ -56,6 +56,5 @@ data = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]])
 #print(q1)
 #print(ub)
 
-print(persistentBetti(data, k, (eps1, eps1)))
-print(persistentBetti(data, k, (eps1, eps2)))
-
+#print(persistentBetti(data, k, (eps1, eps1)))
+#print(persistentBetti(data, k, (eps1, eps2)))
