@@ -19,8 +19,8 @@ def persistenceDiagram(bettis, scales, figure_path=None):
 
     ax.set_xlim([s0 - sd, s1 + sd])
     ax.set_ylim([s0 - sd, s1 + sd])
-    ax.set_xticks(scales[::N // 6])
-    ax.set_yticks(scales[::N // 6])
+    ax.set_xticks(scales[::N // 5])
+    ax.set_yticks(scales[::N // 5])
     ax.set_xlabel("Birth")
     ax.set_ylabel("Death")
     fig.set_tight_layout(True)

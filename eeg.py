@@ -12,9 +12,9 @@ from persistentDirac import diracMaximalTimeSeries
 ##################
 tau = 2 # Delay
 ks = [0, 1] # Dimension for Betti number
-N = 80 # Number of scales
+N = 20 # Number of scales
 eps0 = 0 # Smallest scale
-epsStep = 0.25 # Step between scales
+epsStep = 1 # Step between scales
 scales = [eps0 + (x * epsStep) for x in range(N)]
 
 
@@ -25,7 +25,7 @@ data = pd.read_csv('data/eeg-data.csv')
 data = data.iloc[5857:,:]
 #data = data.drop(columns = ['IndexId', 'Ref1', 'Ref2', 'Ref3', 'TS1', 'TS2'])
 #data = data.iloc[100:150,:]
-data = data.iloc[100:120,:]
+data = data.iloc[100:150,:]
 data['time'] = data.reset_index().index
 data = np.array(data.Channel2)
 
