@@ -17,21 +17,17 @@ def distanceOracleTakens(data, t, s, eps):
 # Memebrship Oracle for Point Clouds
 def membershipOracle(simplex, data, eps):
     for i, vi in enumerate(simplex):
-        if vi == 1:
-            for j, vj in enumerate(simplex[i:]):
-                if vj == 1:
-                    if distanceOracle(data, i, j + i, eps) == 0:
-                        return 0
+        for vj in enumerate(simplex[i:]):
+            if distanceOracle(data, vi, vj, eps) == 0:
+                return 0
     return 1
 
 # Memebrship Oracle for Time Series
 def membershipOracleTakens(simplex, data, eps, tau, d):
     for i, vi in enumerate(simplex):
-        if vi == 1:
-            for j, vj in enumerate(simplex[i:]):
-                if vj == 1:
-                    for t in range(d):
-                        if distanceOracleTakens(data, i + (t * tau), j + i + (t * tau), eps) == 0:
-                            return 0
+        for vj in enumerate(simplex[i:]):
+            for t in range(d):
+                if distanceOracleTakens(data, vi + (t * tau), vj + (t * tau), eps) == 0:
+                    return 0
     return 1
 

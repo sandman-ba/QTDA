@@ -1,31 +1,29 @@
 import numpy as np
 from numpy import pi
 from scipy.sparse.linalg import expm, eigsh
-from itertools import product
+from itertools import combinations
 from membershipVR import *
 
 # Create iterable with all possible k-simplices
 def kcomplex(k, n):
-    for simplex in product(range(2), repeat=n):
-        if sum(simplex) == k + 1:
-            yield simplex
+    return list(combinations(range(n), k + 1))
 
 # Get coefficient of boundary matrix
 def boundaryOracle(face, simplex):
     index = 0
     diff = 0
-    for vf, vs in zip(face, simplex):
-        if vf == 1:
-            if vs == 0:
-                return 0 # If face has vertex that simplex doesn't, return 0
-            else:
-                index += 1
+    # If 'face' has extra vertex then it's not a face of simplex
+    for vf in face:
+        if vf not in simplex:
+            return 0
+    for vs in simplex:
+        if vs in face:
+            index += 1
         else:
-            if vs == 1:
-                diff += 1
-                if diff > 1:
-                    return 0 # If simplex has more than one extra vertex, return 0
-                power = index
+            diff += 1
+            if diff > 1:
+                return 0 # If simplex has more than one extra vertex, return 0
+            power = index
     return (-1)**power
 
 
