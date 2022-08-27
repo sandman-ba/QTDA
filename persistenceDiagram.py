@@ -29,8 +29,8 @@ def persistenceDiagram(bettis, scales, figure_path=None):
 
     for k, bettik in enumerate(bettis):
 
-        bettik = bettik.reshape((N,N))
-        bettik = bettik.T
+        #bettik = bettik.reshape((N,N))
+        #bettik = bettik.T
 
         for j in range(N):
             for i in range(N - j - 1, 0, -1):

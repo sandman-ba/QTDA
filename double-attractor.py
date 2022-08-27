@@ -31,9 +31,15 @@ for k in ks:
     def betti(eps):
         return persistentBetti(data, k, eps, dirac, tau)
 
-    with concurrent.futures.ProcessPoolExecutor() as executor:
-        bettik = executor.map(betti, product(scales, reversed(scales)))
+    bettik = []
 
-    bettis.append(np.fromiter(bettik, np.double))
+    for eps in reversed(scales):
+
+        with concurrent.futures.ProcessPoolExecutor() as executor:
+            batch = executor.map(betti, product(scales, [eps]))
+
+        bettik.append(list(batch))
+
+    bettis.append(np.array(bettik, np.half))
 
 persistenceDiagram(bettis, scales, figure_path='figures/diagram-two-period.png')

@@ -44,15 +44,21 @@ for k in ks:
     def betti(eps):
         return persistentBetti(data, k, eps, dirac, tau)
 
+    bettik = []
+
+    for eps in reversed(scales):
+
 #    with concurrent.futures.ProcessPoolExecutor() as executor:
 #        bettikClassic = executor.map(bettiClassic, product(scales, reversed(scales)))
 
 #    bettisClassic.append(np.fromiter(bettikClassic, np.half))
 
-    with concurrent.futures.ProcessPoolExecutor() as executor:
-        bettik = executor.map(betti, product(scales, reversed(scales)))
+        with concurrent.futures.ProcessPoolExecutor() as executor:
+            batch = executor.map(betti, product(scales, [eps]))
 
-    bettis.append(np.fromiter(bettik, np.half))
+        bettik.append(list(batch))
+
+    bettis.append(np.array(bettik, np.half))
 
 
 #persistenceDiagram(bettisClassic, scales, figure_path='figures/diagram-eeg-classic.png')
