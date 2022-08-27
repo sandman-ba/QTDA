@@ -33,24 +33,22 @@ data = np.array(data.Channel2)
 #######################
 # Persistence Diagram #
 #######################
-bettis = []
+bettisClassic = []
 for k in ks:
     dirac = diracMaximalTimeSeries(data, k, tau)
-    print(k)
 
-    def betti(eps):
-        return persistentBetti(data, k, eps, dirac, tau)
+    def bettiClassic(eps):
+        return persistentBettiClassic(data, k, eps, dirac, tau)
 
-    bettik = []
+    bettikClassic = []
 
     for eps in reversed(scales):
 
-        print(eps)
         with concurrent.futures.ProcessPoolExecutor() as executor:
-            batch = executor.map(betti, product(scales, [eps]))
+            batchClassic = executor.map(bettiClassic, product(scales, [eps]))
 
-        bettik.append(list(batch))
+        bettikClassic.append(list(batchClassic))
+    bettisClassic.append(np.array(bettikClassic, np.half))
 
-    bettis.append(np.array(bettik, np.half))
+persistenceDiagram(bettisClassic, scales, figure_path='figures/diagram-eeg-classic.png')
 
-persistenceDiagram(bettis, scales, figure_path='figures/diagram-eeg.png')

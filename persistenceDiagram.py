@@ -45,7 +45,7 @@ def persistenceDiagram(bettis, scales, figure_path=None):
         for x in range(N):
             for y in range(N - x):
                 betti = bettik[y, x]
-                if betti > 0.5:
+                if betti > 0.8:
                     circle = Circle( (scales[x], scales[N - y -1]) , round(betti) * r)
                     circles.append(circle)
 

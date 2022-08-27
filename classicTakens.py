@@ -5,7 +5,7 @@ from persistentDirac import *
 
 
 # Persistent Betti Number
-def persistentBetti(data, k, eps, dirac=None, tau=None, d=2, xi=1, M_multiplier=5, l_multiplier=2):
+def persistentBetti(data, k, eps, dirac=None, tau=None, d=2, xi=1, M_multiplier=7, l_multiplier=8):
     eps1, eps2 = eps
     if eps1 > eps2:
         return 0.0
