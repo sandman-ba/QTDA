@@ -23,9 +23,7 @@ scales = [eps0 + (x * epsStep) for x in range(N)]
 #####################
 data = pd.read_csv('data/eeg-data.csv')
 data = data.iloc[5857:,:]
-#data = data.drop(columns = ['IndexId', 'Ref1', 'Ref2', 'Ref3', 'TS1', 'TS2'])
-#data = data.iloc[100:150,:]
-data = data.iloc[100:140,:]
+data = data.iloc[110:150,:]
 data['time'] = data.reset_index().index
 data = np.array(data.Channel2)
 
@@ -36,7 +34,6 @@ data = np.array(data.Channel2)
 bettis = []
 for k in ks:
     dirac = diracMaximalTimeSeries(data, k, tau)
-    print(k)
 
     def betti(eps):
         return persistentBetti(data, k, eps, dirac, tau)
@@ -45,7 +42,6 @@ for k in ks:
 
     for eps in reversed(scales):
 
-        print(eps)
         with concurrent.futures.ProcessPoolExecutor() as executor:
             batch = executor.map(betti, product(scales, [eps]))
 
