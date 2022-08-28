@@ -33,6 +33,7 @@ cloudy = data.Channel2[tau:] # Point Cloud y
 fig1, ax1 = plt.subplots(1, 1, figsize = (6.5, 5))
 #ax1.plot(data.time[100:200], data.Channel2[100:200], '-')
 ax1.plot(data.time[110:150], data.Channel2[110:150], '-')
+ax1.plot(data.time[110:150], data.Channel2[110:150], 'o')
 #ax1.set_title("Time Series")
 ax1.set_xlabel(r"\(t\)")
 ax1.set_ylabel(r"\(x(t)\)")
