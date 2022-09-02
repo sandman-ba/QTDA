@@ -10,7 +10,7 @@ from persistentDirac import diracMaximalTimeSeries
 ##################
 # Set Parameters #
 ##################
-tau = 2 # Delay
+tau = 6 # Delay
 ks = [0, 1] # Dimension for Betti number
 N = 16 # Number of scales
 eps0 = 0 # Smallest scale

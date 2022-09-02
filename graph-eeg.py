@@ -8,7 +8,7 @@ from numpy import pi
 ##############
 # Parameters #
 ##############
-tau = 1 # Delay
+tau = 6 # Delay
 d = 2 # Dimension of point cloud
 
 
