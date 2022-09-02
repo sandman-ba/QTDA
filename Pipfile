@@ -9,6 +9,7 @@ pandas = "*"
 scipy = "*"
 matplotlib = "*"
 qiskit = "*"
+statsmodels = "*"
 
 [dev-packages]
 

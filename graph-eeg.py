@@ -1,13 +1,14 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from statsmodels.graphics.tsaplots import plot_acf
 from numpy import pi
 
 
 ##############
 # Parameters #
 ##############
-tau = 2 # Delay
+tau = 1 # Delay
 d = 2 # Dimension of point cloud
 
 
@@ -57,4 +58,19 @@ fig2.set_tight_layout(True)
 fig1.savefig("figures/time-series-eeg.png")
 fig2.savefig("figures/point-cloud-eeg.png")
 
+############################
+# Plotting autocorrelation #
+############################
 
+fig3, ax3 = plt.subplots(1, 1, figsize = (6.5, 5))
+pd.plotting.autocorrelation_plot(data.Channel2[110:150], ax3)
+ax3.set_xlim([0, 10])
+
+fig3.set_tight_layout(True)
+fig3.savefig("figures/autocorrelation-eeg.png")
+
+fig4, ax4 = plt.subplots(1, 1, figsize = (6.5, 5))
+plot_acf(data.Channel2[110:150], ax4, lags=10)
+
+fig4.set_tight_layout(True)
+fig4.savefig("figures/autocorrelation2-eeg.png")
