@@ -34,8 +34,8 @@ with mpl.rc_context({'font.size': 26}):
     # Plotting Time series #
     ########################
     fig1, (ax1, ax2) = plt.subplots(1, 2, figsize = (10, 5.5))
-    ax1.plot(data.time[110:150], data.Channel2[110:150], '-')
-    ax1.plot(data.time[110:150], data.Channel2[110:150], 'o')
+    ax1.plot(data.time, data.Channel2, '-')
+    ax1.plot(data.time, data.Channel2, 'o')
     ax1.set_title("(a)")
     ax1.set_xlabel(r"\(t\)")
     ax1.set_ylabel(r"\(x(t)\)")
@@ -44,7 +44,7 @@ with mpl.rc_context({'font.size': 26}):
     ########################
     # Plotting Point Cloud #
     ########################
-    ax2.plot(cloudx[110:150], cloudy[110:150], 'o')
+    ax2.plot(cloudx, cloudy, 'o')
     ax2.set_title("(b)")
     ax2.set_xlabel(r"\(x(t)\)")
     ax2.set_ylabel(r"\(x(t + \tau)\)")
