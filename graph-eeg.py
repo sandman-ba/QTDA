@@ -1,7 +1,8 @@
 import numpy as np
+import matplotlib as mpl
 import pandas as pd
 import matplotlib.pyplot as plt
-from statsmodels.graphics.tsaplots import plot_acf
+# from statsmodels.graphics.tsaplots import plot_acf
 from numpy import pi
 
 
@@ -29,18 +30,30 @@ points = data.time.size - (tau*(d-1)) # Number of points
 cloudx = data.Channel2[:points] # Point Cloud x
 cloudy = data.Channel2[tau:] # Point Cloud y
 
+with mpl.rc_context({'font.size': 26}):
+    ########################
+    # Plotting Time series #
+    ########################
+    fig1, (ax1, ax2) = plt.subplots(1, 2, figsize = (10, 5.5))
+    ax1.plot(data.time[110:150], data.Channel2[110:150], '-')
+    ax1.plot(data.time[110:150], data.Channel2[110:150], 'o')
+    ax1.set_title("(a)")
+    ax1.set_xlabel(r"\(t\)")
+    ax1.set_ylabel(r"\(x(t)\)")
 
-########################
-# Plotting Point Cloud #
-########################
-fig1, ax1 = plt.subplots(1, 1, figsize = (6.5, 5))
-ax1.plot(cloudx, cloudy, 'o')
-ax1.set_xlabel(r"\(x(t)\)")
-ax1.set_ylabel(r"\(x(t + \tau)\)")
 
-fig1.set_tight_layout(True)
+    ########################
+    # Plotting Point Cloud #
+    ########################
+    ax2.plot(cloudx[110:150], cloudy[110:150], 'o')
+    ax2.set_title("(b)")
+    ax2.set_xlabel(r"\(x(t)\)")
+    ax2.set_ylabel(r"\(x(t + \tau)\)")
 
-################
-# Saving plots #
-################
-fig1.savefig("figures/point-cloud-eeg.png")
+    fig1.set_tight_layout(True)
+
+    ################
+    # Saving plots #
+    ################
+    fig1.savefig("figures/eeg.png")
+
