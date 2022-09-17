@@ -12,8 +12,8 @@ from numpy import pi
 T = 5
 tau = 1 # Delay
 d = 2 # Dimension of point cloud
-e1 = 1.2 # Second scale
-e2 = 2.2 # Third scale
+e1 = 1.2 # First scale
+e2 = 2.2 # Second scale
 def f(x): return np.sin((2.0*pi)*x) # Time series function
 
 
@@ -32,7 +32,7 @@ with mpl.rc_context({'font.size': 26}):
     # Plotting Time series #
     ########################
     fig1, (ax1, ax2) = plt.subplots(1, 2, figsize = (10, 5.5))
-    time2 = np.linspace(0.0, 2.0, 100)
+    time2 = np.linspace(0.0, 1.5, 100)
     ax1.plot(time2, f(time2), '-')
     ax1.plot(time, series, 'o')
     ax1.set_title("(a)")

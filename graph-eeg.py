@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib as mpl
 import pandas as pd
 import matplotlib.pyplot as plt
-# from statsmodels.graphics.tsaplots import plot_acf
 from numpy import pi
 
 
