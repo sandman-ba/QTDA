@@ -10,7 +10,7 @@ from persistentDirac import diracMaximalTimeSeries
 ##################
 # Set Parameters #
 ##################
-tau = 6 # Delay
+tau = 2 # Delay
 ks = [0, 1] # Dimension for Betti number
 N = 16 # Number of scales
 eps0 = 0 # Smallest scale
@@ -22,8 +22,10 @@ scales = [eps0 + (x * epsStep) for x in range(N)]
 #  Data processing  #
 #####################
 data = pd.read_csv('data/eeg-data.csv')
+data = data.drop(columns = ['IndexId', 'Ref1', 'Ref2', 'Ref3', 'TS1', 'TS2', 'Channel1'])
 data = data.iloc[5857:,:]
-data = data.iloc[110:150,:]
+data = data.reset_index()
+data = data.iloc[750:800,:]
 data['time'] = data.reset_index().index
 data = np.array(data.Channel2)
 

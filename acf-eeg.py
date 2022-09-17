@@ -5,13 +5,6 @@ from statsmodels.graphics.tsaplots import plot_acf
 from numpy import pi
 
 
-##############
-# Parameters #
-##############
-tau = 2 # Delay
-d = 2 # Dimension of point cloud
-
-
 #####################
 #  Data processing  #
 #####################
@@ -22,25 +15,30 @@ data = data.reset_index()
 data = data.iloc[750:800, :]
 data['time'] = data.reset_index().index
 
-#####################
-# Values used often #
-#####################
-points = data.time.size - (tau*(d-1)) # Number of points
-cloudx = data.Channel2[:points] # Point Cloud x
-cloudy = data.Channel2[tau:] # Point Cloud y
 
+############################
+# Plotting autocorrelation #
+############################
 
-########################
-# Plotting Point Cloud #
-########################
 fig1, ax1 = plt.subplots(1, 1, figsize = (6.5, 5))
-ax1.plot(cloudx, cloudy, 'o')
-ax1.set_xlabel(r"\(x(t)\)")
-ax1.set_ylabel(r"\(x(t + \tau)\)")
+plot_acf(data.Channel2, ax1, lags=10)
 
 fig1.set_tight_layout(True)
+fig1.savefig("figures/autocorrelation-eeg.png")
+
+########################
+# Plotting Time series #
+########################
+fig2, ax2 = plt.subplots(1, 1, figsize = (6.5, 5))
+ax2.plot(data.time, data.Channel2, '-')
+ax2.plot(data.time, data.Channel2, 'o')
+ax2.set_xlabel(r"\(t\)")
+ax2.set_ylabel(r"\(x(t)\)")
+
+
+fig2.set_tight_layout(True)
 
 ################
 # Saving plots #
 ################
-fig1.savefig("figures/point-cloud-eeg.png")
+fig2.savefig("figures/time-series-eeg.png")
