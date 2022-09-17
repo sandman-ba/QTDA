@@ -8,7 +8,7 @@ from numpy import pi
 ##############
 # Parameters #
 ##############
-tau = 2 # Delay
+tau = 8 # Delay
 d = 2 # Dimension of point cloud
 
 
@@ -19,7 +19,7 @@ data = pd.read_csv('data/eeg-data.csv')
 data = data.iloc[5857:,:]
 data = data.drop(columns = ['IndexId', 'Ref1', 'Ref2', 'Ref3', 'TS1', 'TS2', 'Channel1'])
 data = data.reset_index()
-data = data.iloc[750:800, :]
+data = data.iloc[1110:1160, :]
 data['time'] = data.reset_index().index
 
 #####################
