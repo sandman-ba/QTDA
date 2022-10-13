@@ -3,13 +3,13 @@ from numpy import linalg as LA
 
 # Distance Oracle Point Cloud
 def distanceOracle(data, i, j, eps):
-    if (LA.norm( data[i, :] - data[j, :]) > eps):
+    if (LA.norm( data[i, :] - data[j, :]) >= eps):
         return 0
     return 1
 
 # Distance Oracle Time Series
 def distanceOracleTakens(data, t, s, eps):
-    if (np.abs(data[t] - data[s]) > eps):
+    if (np.abs(data[t] - data[s]) >= eps):
         return 0
     return 1
 

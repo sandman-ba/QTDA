@@ -16,7 +16,7 @@ tau = 1 # Delay
 N = 25 # Number of scales
 eps0 = 0 # Smallest scale
 epsStep = 0.1 # Step between scales
-scales = [eps0 + (x * epsStep) for x in range(N)]
+scales = [round(10 * (eps0 + (x * epsStep))) / 10 for x in range(N)]
 def f(x): return np.sin((2.0*pi)*x) # Time series function
 time = np.linspace(0.0, 1.0, num=T, endpoint=True) # Time series times
 data = f(time) # Time series
@@ -29,7 +29,6 @@ data = f(time) # Time series
 bettis = []
 for k in ks:
     dirac = diracMaximalTimeSeries(data, k, tau)
-    print(dirac)
 
     def betti(eps):
         return persistentBettiClassic(data, k, eps, dirac, tau)

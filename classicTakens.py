@@ -33,7 +33,6 @@ def persistentBetti(data, k, eps, dirac=None, tau=None, d=2, xi=1, M_multiplier=
 
 # Persistent Betti Number
 def persistentBettiClassic(data, k, eps, dirac=None, tau=None, d=2, xi=1):
-    print(eps)
     eps1, eps2 = eps
     if eps1 > eps2:
         return 0.0
@@ -48,6 +47,4 @@ def persistentBettiClassic(data, k, eps, dirac=None, tau=None, d=2, xi=1):
         else:
             eigen, _ = LA.eig(diracTimeSeries(data, k, eps1, eps2, tau, d, xi, dirac)[1])
     gap = np.abs(eigen - xi)
-    print(sum(gap < 10**(-9)))
     return sum(gap < 10**(-9))
-
